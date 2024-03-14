@@ -3,6 +3,12 @@ A game for 1 - 4 players not-so-loosely inspired by the iconic Pac-Man!
 
 This project was developed in **Unity** using **Netcode for GameObjects** as a part of the **Advanced Game Design** curriculum at SDSU for the Spring 2024 semester.
 
+## Player Options
+
+| Cindy | Lindy | Mindy | Windy |
+| :---: | :---: | :---: | :---: |
+| ![A small pixel art image of a fire elemental](/Assets/Images/cindy.png) | ![A small pixel art image of a water elemental](/Assets/Images/lindy.png) | ![A small pixel art image of an earth elemental](/Assets/Images/mindy.png) | ![A small pixel art image of an air elemental](/Assets/Images/windy.png) |
+
 ## External Resources
 
 ### Image Assets
