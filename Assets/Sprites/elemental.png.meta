@@ -47,7 +47,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 60
+  spritePixelsToUnits: 40
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -67,7 +67,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 1024
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 0
@@ -132,12 +132,12 @@ TextureImporter:
       name: lindy_d1
       rect:
         serializedVersion: 2
-        x: 0
+        x: 10
         y: 448
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -153,12 +153,12 @@ TextureImporter:
       name: lindy_d2
       rect:
         serializedVersion: 2
-        x: 60
+        x: 70
         y: 448
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -174,12 +174,12 @@ TextureImporter:
       name: lindy_d3
       rect:
         serializedVersion: 2
-        x: 120
+        x: 130
         y: 448
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -195,12 +195,12 @@ TextureImporter:
       name: cindy_d1
       rect:
         serializedVersion: 2
-        x: 180
+        x: 190
         y: 448
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -216,12 +216,12 @@ TextureImporter:
       name: cindy_d2
       rect:
         serializedVersion: 2
-        x: 240
+        x: 250
         y: 448
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -237,12 +237,12 @@ TextureImporter:
       name: cindy_d3
       rect:
         serializedVersion: 2
-        x: 300
+        x: 310
         y: 448
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -258,12 +258,12 @@ TextureImporter:
       name: windy_d1
       rect:
         serializedVersion: 2
-        x: 360
+        x: 370
         y: 448
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -279,12 +279,12 @@ TextureImporter:
       name: windy_d2
       rect:
         serializedVersion: 2
-        x: 420
+        x: 430
         y: 448
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -300,12 +300,12 @@ TextureImporter:
       name: windy_d3
       rect:
         serializedVersion: 2
-        x: 480
+        x: 490
         y: 448
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -321,12 +321,12 @@ TextureImporter:
       name: mindy_d1
       rect:
         serializedVersion: 2
-        x: 540
+        x: 550
         y: 448
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -342,12 +342,12 @@ TextureImporter:
       name: mindy_d2
       rect:
         serializedVersion: 2
-        x: 600
+        x: 610
         y: 448
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -363,12 +363,12 @@ TextureImporter:
       name: mindy_d3
       rect:
         serializedVersion: 2
-        x: 660
+        x: 670
         y: 448
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -384,12 +384,12 @@ TextureImporter:
       name: lindy_l1
       rect:
         serializedVersion: 2
-        x: 0
+        x: 10
         y: 384
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -405,12 +405,12 @@ TextureImporter:
       name: lindy_l2
       rect:
         serializedVersion: 2
-        x: 60
+        x: 70
         y: 384
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -426,12 +426,12 @@ TextureImporter:
       name: lindy_l3
       rect:
         serializedVersion: 2
-        x: 120
+        x: 130
         y: 384
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -447,12 +447,12 @@ TextureImporter:
       name: cindy_l1
       rect:
         serializedVersion: 2
-        x: 180
+        x: 190
         y: 384
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -468,12 +468,12 @@ TextureImporter:
       name: cindy_l2
       rect:
         serializedVersion: 2
-        x: 240
+        x: 250
         y: 384
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -489,12 +489,12 @@ TextureImporter:
       name: cindy_l3
       rect:
         serializedVersion: 2
-        x: 300
+        x: 310
         y: 384
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -510,12 +510,12 @@ TextureImporter:
       name: windy_l1
       rect:
         serializedVersion: 2
-        x: 360
+        x: 370
         y: 384
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -531,12 +531,12 @@ TextureImporter:
       name: windy_l2
       rect:
         serializedVersion: 2
-        x: 420
+        x: 430
         y: 384
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -552,12 +552,12 @@ TextureImporter:
       name: windy_l3
       rect:
         serializedVersion: 2
-        x: 480
+        x: 490
         y: 384
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -573,12 +573,12 @@ TextureImporter:
       name: mindy_l1
       rect:
         serializedVersion: 2
-        x: 540
+        x: 550
         y: 384
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -594,12 +594,12 @@ TextureImporter:
       name: mindy_l2
       rect:
         serializedVersion: 2
-        x: 600
+        x: 610
         y: 384
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -615,12 +615,12 @@ TextureImporter:
       name: mindy_l3
       rect:
         serializedVersion: 2
-        x: 660
+        x: 670
         y: 384
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -636,12 +636,12 @@ TextureImporter:
       name: lindy_r1
       rect:
         serializedVersion: 2
-        x: 0
+        x: 10
         y: 320
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -657,12 +657,12 @@ TextureImporter:
       name: lindy_r2
       rect:
         serializedVersion: 2
-        x: 60
+        x: 70
         y: 320
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -678,12 +678,12 @@ TextureImporter:
       name: lindy_r3
       rect:
         serializedVersion: 2
-        x: 120
+        x: 130
         y: 320
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -699,12 +699,12 @@ TextureImporter:
       name: cindy_r1
       rect:
         serializedVersion: 2
-        x: 180
+        x: 190
         y: 320
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -720,12 +720,12 @@ TextureImporter:
       name: cindy_r2
       rect:
         serializedVersion: 2
-        x: 240
+        x: 250
         y: 320
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -741,12 +741,12 @@ TextureImporter:
       name: cindy_r3
       rect:
         serializedVersion: 2
-        x: 300
+        x: 310
         y: 320
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -762,12 +762,12 @@ TextureImporter:
       name: windy_r1
       rect:
         serializedVersion: 2
-        x: 360
+        x: 370
         y: 320
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -783,12 +783,12 @@ TextureImporter:
       name: windy_r2
       rect:
         serializedVersion: 2
-        x: 420
+        x: 430
         y: 320
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -804,12 +804,12 @@ TextureImporter:
       name: windy_r3
       rect:
         serializedVersion: 2
-        x: 480
+        x: 490
         y: 320
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -825,12 +825,12 @@ TextureImporter:
       name: mindy_r1
       rect:
         serializedVersion: 2
-        x: 540
+        x: 550
         y: 320
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -846,12 +846,12 @@ TextureImporter:
       name: mindy_r2
       rect:
         serializedVersion: 2
-        x: 600
+        x: 610
         y: 320
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -867,12 +867,12 @@ TextureImporter:
       name: mindy_r3
       rect:
         serializedVersion: 2
-        x: 660
+        x: 670
         y: 320
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -888,12 +888,12 @@ TextureImporter:
       name: lindy_u1
       rect:
         serializedVersion: 2
-        x: 0
+        x: 10
         y: 256
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -909,12 +909,12 @@ TextureImporter:
       name: lindy_u2
       rect:
         serializedVersion: 2
-        x: 60
+        x: 70
         y: 256
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -930,12 +930,12 @@ TextureImporter:
       name: lindy_u3
       rect:
         serializedVersion: 2
-        x: 120
+        x: 130
         y: 256
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -951,12 +951,12 @@ TextureImporter:
       name: cindy_u1
       rect:
         serializedVersion: 2
-        x: 180
+        x: 190
         y: 256
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -972,12 +972,12 @@ TextureImporter:
       name: cindy_u2
       rect:
         serializedVersion: 2
-        x: 240
+        x: 250
         y: 256
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -993,12 +993,12 @@ TextureImporter:
       name: cindy_u3
       rect:
         serializedVersion: 2
-        x: 300
+        x: 310
         y: 256
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1014,12 +1014,12 @@ TextureImporter:
       name: windy_u1
       rect:
         serializedVersion: 2
-        x: 360
+        x: 370
         y: 256
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1035,12 +1035,12 @@ TextureImporter:
       name: windy_u2
       rect:
         serializedVersion: 2
-        x: 420
+        x: 430
         y: 256
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1056,12 +1056,12 @@ TextureImporter:
       name: windy_u3
       rect:
         serializedVersion: 2
-        x: 480
+        x: 490
         y: 256
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1077,12 +1077,12 @@ TextureImporter:
       name: mindy_u1
       rect:
         serializedVersion: 2
-        x: 540
+        x: 550
         y: 256
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1098,12 +1098,12 @@ TextureImporter:
       name: mindy_u2
       rect:
         serializedVersion: 2
-        x: 600
+        x: 610
         y: 256
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1119,12 +1119,12 @@ TextureImporter:
       name: mindy_u3
       rect:
         serializedVersion: 2
-        x: 660
+        x: 670
         y: 256
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1140,12 +1140,12 @@ TextureImporter:
       name: lindy_x1
       rect:
         serializedVersion: 2
-        x: 60
+        x: 70
         y: 192
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1161,12 +1161,12 @@ TextureImporter:
       name: cindy_x1
       rect:
         serializedVersion: 2
-        x: 240
+        x: 250
         y: 192
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1182,12 +1182,12 @@ TextureImporter:
       name: windy_x1
       rect:
         serializedVersion: 2
-        x: 420
+        x: 430
         y: 192
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1203,12 +1203,12 @@ TextureImporter:
       name: mindy_x1
       rect:
         serializedVersion: 2
-        x: 600
+        x: 610
         y: 192
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1224,12 +1224,12 @@ TextureImporter:
       name: lindy_x2
       rect:
         serializedVersion: 2
-        x: 60
+        x: 70
         y: 128
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1245,12 +1245,12 @@ TextureImporter:
       name: cindy_x2
       rect:
         serializedVersion: 2
-        x: 240
+        x: 250
         y: 128
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1266,12 +1266,12 @@ TextureImporter:
       name: windy_x2
       rect:
         serializedVersion: 2
-        x: 420
+        x: 430
         y: 128
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1287,12 +1287,12 @@ TextureImporter:
       name: mindy_x2
       rect:
         serializedVersion: 2
-        x: 600
+        x: 610
         y: 128
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1308,12 +1308,12 @@ TextureImporter:
       name: lindy_x3
       rect:
         serializedVersion: 2
-        x: 60
+        x: 70
         y: 64
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1329,12 +1329,12 @@ TextureImporter:
       name: cindy_x3
       rect:
         serializedVersion: 2
-        x: 240
+        x: 250
         y: 64
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1350,12 +1350,12 @@ TextureImporter:
       name: windy_x3
       rect:
         serializedVersion: 2
-        x: 420
+        x: 430
         y: 64
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1371,12 +1371,12 @@ TextureImporter:
       name: mindy_x3
       rect:
         serializedVersion: 2
-        x: 600
+        x: 610
         y: 64
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1392,12 +1392,12 @@ TextureImporter:
       name: lindy_x4
       rect:
         serializedVersion: 2
-        x: 60
+        x: 70
         y: 0
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1413,12 +1413,12 @@ TextureImporter:
       name: cindy_x4
       rect:
         serializedVersion: 2
-        x: 240
+        x: 250
         y: 0
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1434,12 +1434,12 @@ TextureImporter:
       name: windy_x4
       rect:
         serializedVersion: 2
-        x: 420
+        x: 430
         y: 0
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1455,12 +1455,12 @@ TextureImporter:
       name: mindy_x4
       rect:
         serializedVersion: 2
-        x: 600
+        x: 610
         y: 0
-        width: 60
-        height: 64
+        width: 40
+        height: 40
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
