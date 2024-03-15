@@ -7,7 +7,7 @@ This project was developed in **Unity** using **Netcode for GameObjects** as a p
 
 | Cindy | Lindy | Mindy | Windy |
 | :---: | :---: | :---: | :---: |
-| ![A small pixel art image of a fire elemental](/Assets/Images/cindy.png) | ![A small pixel art image of a water elemental](/Assets/Images/lindy.png) | ![A small pixel art image of an earth elemental](/Assets/Images/mindy.png) | ![A small pixel art image of an air elemental](/Assets/Images/windy.png) |
+| ![A small pixel art image of a fire elemental](/Assets/Images/cindy.gif) | ![A small pixel art image of a water elemental](/Assets/Images/lindy.png) | ![A small pixel art image of an earth elemental](/Assets/Images/mindy.png) | ![A small pixel art image of an air elemental](/Assets/Images/windy.png) |
 
 ## External Resources
 
