@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 /// <summary>
 /// Class <c>Player</c> handles player logic.
@@ -29,6 +30,7 @@ public class Player : MonoBehaviour
     public Vector2 NextDir { get; private set; } // next direction is queued if we cannot move that way yet
     public Vector3 StartPos { get; private set; }
     public int Score { get; private set; }
+    public int BankedScore {  get; private set; }
 
     /// <summary>
     /// Struct <c>PlayerControls</c> provides for each player to have their own key controls without changing the base class's behavior.
@@ -144,7 +146,14 @@ public class Player : MonoBehaviour
         rBody.isKinematic = false;
         enabled = true;
         ResetMode();
-        if (isFullReset) SetScore(0);
+        if (isFullReset)
+        {
+            SetBanked(0);
+        } else
+        {
+            IncBanked(Score);
+        }
+        SetScore(0);
     }
 
     /// <summary>
@@ -193,7 +202,25 @@ public class Player : MonoBehaviour
     /// <param name="plusScore">the increment value for the score. <see cref="SetScore"/></param>
     private void IncScore(int plusScore)
     {
-        SetScore(Score  + plusScore);
+        SetScore(Score + plusScore);
+    }
+
+    /// <summary>
+    /// Method <c>SetBanked</c> is a mutator for this player's internal banked score value.
+    /// </summary>
+    /// <param name="newBanked">the new banked score value.</param>
+    private void SetBanked(int newBanked)
+    {
+        BankedScore = newBanked;
+    }
+
+    /// <summary>
+    /// Method <c>IncBanked</c> increments this player's banked score by the given value.
+    /// </summary>
+    /// <param name="plusBanked">the increment value for the banked score. <see cref="SetBanked"/></param>
+    private void IncBanked(int plusBanked)
+    {
+        SetBanked(BankedScore + plusBanked);
     }
 
     /// <summary>
@@ -207,36 +234,72 @@ public class Player : MonoBehaviour
         return hit.collider != null;
     }
 
-
+    /// <summary>
+    /// Method <c>EatPellet</c> handles state changes when this player eats a pellet.
+    /// </summary>
+    /// <param name="pellet">the pellet eaten by this player.</param>
     public void EatPellet(Pellet pellet)
     {
+        pellet.gameObject.SetActive(false);
         if (pellet is PowerPellet)
         {
             EnterEnemyMode(PowerPellet.DURATION);
         }
         IncScore(pellet.Points);
-        game.PelletEaten(pellet);
+        game.PelletEaten();
     }
 
+    /// <summary>
+    /// Method <c>EatPlayer</c> handles state changes when this player eats another.
+    /// </summary>
+    /// <param name="player">the player eaten by this player.</param>
+    public void EatPlayer(Player player)
+    {
+        IncScore(player.Score);
+    }
 
+    /// <summary>
+    /// Method <c>OnCollisionEnter2D</c> handles state changes from collisions with other players.
+    /// </summary>
+    /// <param name="collision">the GameObject colliding with this player.</param>
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
-            // player will eat us!
+            Player enemy = collision.gameObject.GetComponent<Player>();
+            enemy.EatPlayer(this);
+            EnterDeadMode(2f);
         }
     }
 
+    /// <summary>
+    /// Method <c>ResetMode</c> resets this player the default player mode.
+    /// </summary>
     private void ResetMode()
     {
         gameObject.layer = LayerMask.NameToLayer("Player");
         spriteRenderer.color = Color.white;
     }
 
+    /// <summary>
+    /// Method <c>EnterEnemyMode</c> activates this player's ability to PvP.
+    /// </summary>
+    /// <param name="duration">the duration before the mode resets.</param>
     private void EnterEnemyMode(float duration)
     {
         gameObject.layer = LayerMask.NameToLayer("Enemy");
         spriteRenderer.color = Color.red;
+        Invoke(nameof(ResetMode), duration);
+    }
+
+    /// <summary>
+    /// Method <c>EnterDeadMode</c> sends this player to the graveyard.
+    /// </summary>
+    /// <param name="duration">the duration before the mode resets.</param>
+    private void EnterDeadMode(float duration)
+    {
+        gameObject.layer = LayerMask.NameToLayer("Ghost");
+        spriteRenderer.color = Color.gray;
         Invoke(nameof(ResetMode), duration);
     }
 }

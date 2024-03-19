@@ -68,8 +68,7 @@ public class Game : MonoBehaviour
     /// <summary>
     /// Method <c>PelletEaten</c> handles game state changes when a pellet is eaten.
     /// </summary>
-    /// <param name="pellet"></param>
-    public void PelletEaten(Pellet pellet)
+    public void PelletEaten()
     {
         if (!HasPellets())
         {

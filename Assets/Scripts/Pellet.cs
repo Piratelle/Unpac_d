@@ -13,7 +13,6 @@ public class Pellet : MonoBehaviour
         if (collision.gameObject.layer == LayerMask.NameToLayer("Player") || 
             collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
-            this.gameObject.SetActive(false);
             collision.GetComponent<Player>().EatPellet(this);
         }
     }
