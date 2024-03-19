@@ -19,6 +19,7 @@ public class ConnectionApprovalHandler : MonoBehaviour
 
     /// <summary>
     /// Method <c>ApprovalCheck</c> approves client connection only if there are available client slots.
+    /// When connections are approved, this method also handles player assignment.
     /// </summary>
     /// <param name="request">the client connection request.</param>
     /// <param name="response">the handler's response to the request.</param>
