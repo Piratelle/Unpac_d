@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 /// <summary>
@@ -8,6 +8,7 @@ using UnityEngine;
 public class Game : MonoBehaviour
 {
     [SerializeField] private Transform pellets;
+    [SerializeField] private GameObject[] playerPanels;
 
     public bool IsGameOver { get; private set; } = true; // default to true for purposes of allowing new player connections
 
@@ -31,7 +32,42 @@ public class Game : MonoBehaviour
         }
     }
 
-    // functions needed: score updaters, player collisions (handle in Player?)
+    /// <summary>
+    /// Method <c>Activate</c> activates the UI for the provided player number.
+    /// </summary>
+    /// <param name="playerNum">the player whose UI should be activated.</param>
+    public void Activate(int playerNum)
+    {
+        if (playerNum <= playerPanels.Length && playerNum >= 0)
+        {
+            playerPanels[playerNum].SetActive(true);
+        }
+    }
+
+    public void UpdatePlayerScore(int playerNum, int score)
+    {
+        UpdatePlayerText(playerNum, "Score", score);
+    }
+
+    public void UpdatePlayerBanked(int playerNum, int banked)
+    {
+        UpdatePlayerText(playerNum, "Bank", banked);
+    }
+
+    private void UpdatePlayerText(int playerNum, string name, int value)
+    {
+        if (playerNum <= playerPanels.Length && playerNum >= 0)
+        {
+            GameObject playerPanel = playerPanels[playerNum];
+            foreach (TMP_Text text in playerPanel.GetComponentsInChildren<TMP_Text>())
+            {
+                if (text.name == name) {
+                    text.text = value.ToString();
+                    return;
+                }
+            }
+        }
+    }
 
     /// <summary>
     /// Method <c>NewGame</c> resets all games states, whether level-based or game-based.

@@ -11,6 +11,13 @@ This project was developed in **Unity** using **Netcode for GameObjects** as a p
 
 ## External Resources
 
+### Font Assets
+Free for personal use:
+* [Pac-Font](https://www.dafont.com/pacfont.font)
+
+Used under OFL:
+* [Press Start 2P](https://fonts.google.com/specimen/Press+Start+2P)
+
 ### Image Assets
 Using the **[GameDev Market RPG Humble Bundle](https://www.humblebundle.com/software/rpg-game-dev-bundle)** ([Licence](https://www.gamedevmarket.net/terms-conditions/#pro-licence)):
 * [2D Hand Painted - Dungeon Tileset](https://www.gamedevmarket.net/asset/2d-hand-painted-dungeon-tileset-3011)

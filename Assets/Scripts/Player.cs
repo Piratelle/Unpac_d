@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -25,6 +26,7 @@ public class Player : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private PlayerControls controls;
     private Game game;
+    private int currPlayer;
 
     public Vector2 Dir { get; private set; }
     public Vector2 NextDir { get; private set; } // next direction is queued if we cannot move that way yet
@@ -79,8 +81,10 @@ public class Player : MonoBehaviour
     /// <param name="playerNum"></param>
     public void InitializeAs(int playerNum)
     {
+        currPlayer = playerNum;
         SetControls(playerNum);
         startDir = DIRS[2 * (playerNum % 2) + 1];
+        game.Activate(playerNum);
     }
 
     /// <summary>
@@ -194,6 +198,7 @@ public class Player : MonoBehaviour
     private void SetScore(int newScore)
     {
         Score = newScore;
+        game.UpdatePlayerScore(currPlayer, Score);
     }
 
     /// <summary>
@@ -212,6 +217,7 @@ public class Player : MonoBehaviour
     private void SetBanked(int newBanked)
     {
         BankedScore = newBanked;
+        game.UpdatePlayerBanked(currPlayer, BankedScore);
     }
 
     /// <summary>
