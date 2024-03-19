@@ -7,7 +7,7 @@ using Unity.Netcode;
 /// </summary>
 public class ConnectionApprovalHandler : MonoBehaviour
 {
-    private const int MaxPlayers = 4;
+    [SerializeField] private GameObject[] playerPrefabs;
 
     /// <summary>
     /// Method <c>Start</c> subscribes the handler to ApprovalCheck events.
@@ -29,7 +29,7 @@ public class ConnectionApprovalHandler : MonoBehaviour
         response.Approved = true;
         response.CreatePlayerObject = true;
         response.PlayerPrefabHash = null;
-        if (NetworkManager.Singleton.ConnectedClients.Count >= MaxPlayers)
+        if (NetworkManager.Singleton.ConnectedClients.Count >= playerPrefabs.Length)
         {
             response.Approved = false;
             response.Reason = "Player limit reached.";

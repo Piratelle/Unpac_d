@@ -8,15 +8,20 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     private static readonly Vector2[] DIRS = { Vector2.up, Vector2.left, Vector2.down, Vector2.right };
+    private static readonly PlayerControls[] CTLS = { new PlayerControls(KeyCode.W, KeyCode.A, KeyCode.S, KeyCode.D)
+            , new PlayerControls(KeyCode.UpArrow, KeyCode.LeftArrow, KeyCode.DownArrow, KeyCode.RightArrow)
+            , new PlayerControls(KeyCode.I, KeyCode.J, KeyCode.K, KeyCode.L)
+            , new PlayerControls(KeyCode.Keypad8, KeyCode.Keypad4, KeyCode.Keypad2, KeyCode.Keypad6)};
 
+    [SerializeField] private int defaultPlayer;
     [SerializeField] private float baseSpeed = 4f;
     [SerializeField] private float speedMultiplier = 1f;
-    [SerializeField] private Vector2 startDir;// = Vector2.zero;
     [SerializeField] private LayerMask obstacleLayer;
-    [SerializeField] private PlayerControls controls;
 
+    private Vector2 startDir;
     private Rigidbody2D rBody;
     private Animator animator;
+    private PlayerControls controls;
 
     public Vector2 dir { get; private set; }
     public Vector2 nextDir { get; private set; } // next direction is queued if we cannot move that way yet
@@ -50,15 +55,25 @@ public class Player : MonoBehaviour
         rBody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         startPos = transform.position;
+        InitializeAs(defaultPlayer); // learned from prefab!
     }
 
     /// <summary>
-    /// Method <c>Start</c> initializes the player.
+    /// Method <c>Start</c> initializes the player's generic state.
     /// </summary>
     private void Start()
     {
-        SetControls(KeyCode.W, KeyCode.A, KeyCode.S, KeyCode.D);
         Reset();
+    }
+
+    /// <summary>
+    /// Method <c>InitializeAs</c> initializes the player's number-specific state.
+    /// </summary>
+    /// <param name="playerNum"></param>
+    public void InitializeAs(int playerNum)
+    {
+        SetControls(playerNum);
+        startDir = DIRS[2 * (playerNum % 2) + 1];
     }
 
     /// <summary>
@@ -100,15 +115,15 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// Method <c>SetControls</c> sets the KeyCodes which will be accepted to direct this player.
+    /// Method <c>SetControls</c> sets the KeyCodes which will be accepted to direct this player based on stored presets.
     /// </summary>
-    /// <param name="up">the KeyCode which will indicate "up".</param>
-    /// <param name="left">the KeyCode which will indicate "left".</param>
-    /// <param name="right">the KeyCode which will indicate "right".</param>
-    /// <param name="down">the KeyCode which will indicate "down".</param>
-    private void SetControls(KeyCode up, KeyCode left, KeyCode right, KeyCode down)
+    /// <param name="ctrlIndex">the index of the preset controls to be used for this player.</param>
+    private void SetControls(int ctrlIndex)
     {
-        controls = new PlayerControls(up, left, right, down);
+        if (ctrlIndex < CTLS.Length)
+        {
+            controls = CTLS[ctrlIndex];
+        }
     }
 
     /// <summary>
