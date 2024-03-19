@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -6,9 +7,9 @@ using UnityEngine;
 /// </summary>
 public class Game : MonoBehaviour
 {
-    public Transform pellets;
+    [SerializeField] private Transform pellets;
 
-    private bool isGameOver;
+    public bool IsGameOver { get; private set; } = true; // default to true for purposes of allowing new player connections
 
     /// <summary>
     /// Method <c>Start</c> initializes the object before starting a new game.
@@ -24,7 +25,7 @@ public class Game : MonoBehaviour
     private void Update()
     {
         // potentially change this depending on UI!!
-        if (isGameOver && Input.anyKeyDown)
+        if (IsGameOver && Input.anyKeyDown)
         {
             NewGame();
         }
@@ -37,15 +38,14 @@ public class Game : MonoBehaviour
     /// </summary>
     private void NewGame()
     {
-        // also need to set scores etc.
-        isGameOver = false;
-        NewLevel();
+        IsGameOver = false;
+        NewLevel(true);
     }
 
     /// <summary>
     /// Method <c>NewLevel</c> resets all level-based game states.
     /// </summary>
-    private void NewLevel()
+    private void NewLevel(bool isNewGame = false)
     {
         // handle pellet re-population
         foreach (Transform pellet in pellets)
@@ -53,7 +53,7 @@ public class Game : MonoBehaviour
             pellet.gameObject.SetActive(true);
         }
 
-        // also need to reset player states/positions
+        // reset players... how??
     }
 
     /// <summary>
@@ -62,28 +62,19 @@ public class Game : MonoBehaviour
     private void GameOver()
     {
         // TBD - called when ???
-        isGameOver = true;
+        IsGameOver = true;
     }
 
     /// <summary>
-    /// Method <c>PelletEaten</c> handles state changes when a pellet is eaten.
+    /// Method <c>PelletEaten</c> handles game state changes when a pellet is eaten.
     /// </summary>
     /// <param name="pellet"></param>
     public void PelletEaten(Pellet pellet)
     {
-        pellet.gameObject.SetActive(false);
-
-        if (pellet is PowerPellet)
-        {
-            // do more stuff
-        }
-
-        // update score
-
         if (!HasPellets())
         {
-            // turn off player objects
-            // new round? game over? consider: Invoke(nameOf(NewLevel), 3.0f);
+            // turn off player object(s) to make sure they don't get eaten after level/game is over
+            // new round? game over? consider: Invoke(nameof(NewLevel), 3.0f);
         }
     }
 

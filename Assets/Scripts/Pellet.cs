@@ -1,6 +1,4 @@
-using UnityEditor.Build.Content;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 /// <summary>
 /// Class <c>Pellet</c> handles pellet logic.
@@ -8,18 +6,15 @@ using UnityEngine.UIElements;
 /// </summary>
 public class Pellet : MonoBehaviour
 {
-    public static readonly int POINTS = 10;
+    public readonly int Points = 10;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Player") || 
+            collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
-            Eat();
+            this.gameObject.SetActive(false);
+            collision.GetComponent<Player>().EatPellet(this);
         }
-    }
-
-    protected virtual void Eat()
-    {
-        FindObjectOfType<Game>().PelletEaten(this); // potentially apply this to player instead!
     }
 }

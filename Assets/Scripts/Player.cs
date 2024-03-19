@@ -8,10 +8,10 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     private static readonly Vector2[] DIRS = { Vector2.up, Vector2.left, Vector2.down, Vector2.right };
-    private static readonly PlayerControls[] CTLS = { new PlayerControls(KeyCode.W, KeyCode.A, KeyCode.S, KeyCode.D)
-            , new PlayerControls(KeyCode.UpArrow, KeyCode.LeftArrow, KeyCode.DownArrow, KeyCode.RightArrow)
-            , new PlayerControls(KeyCode.I, KeyCode.J, KeyCode.K, KeyCode.L)
-            , new PlayerControls(KeyCode.Keypad8, KeyCode.Keypad4, KeyCode.Keypad2, KeyCode.Keypad6)};
+    private static readonly PlayerControls[] CTLS = { new(KeyCode.W, KeyCode.A, KeyCode.S, KeyCode.D)
+            , new(KeyCode.UpArrow, KeyCode.LeftArrow, KeyCode.DownArrow, KeyCode.RightArrow)
+            , new(KeyCode.I, KeyCode.J, KeyCode.K, KeyCode.L)
+            , new(KeyCode.Keypad8, KeyCode.Keypad4, KeyCode.Keypad2, KeyCode.Keypad6)};
 
     [SerializeField] private int defaultPlayer;
     [SerializeField] private float baseSpeed = 4f;
@@ -21,11 +21,14 @@ public class Player : MonoBehaviour
     private Vector2 startDir;
     private Rigidbody2D rBody;
     private Animator animator;
+    private SpriteRenderer spriteRenderer;
     private PlayerControls controls;
+    private Game game;
 
-    public Vector2 dir { get; private set; }
-    public Vector2 nextDir { get; private set; } // next direction is queued if we cannot move that way yet
-    public Vector3 startPos { get; private set; }
+    public Vector2 Dir { get; private set; }
+    public Vector2 NextDir { get; private set; } // next direction is queued if we cannot move that way yet
+    public Vector3 StartPos { get; private set; }
+    public int Score { get; private set; }
 
     /// <summary>
     /// Struct <c>PlayerControls</c> provides for each player to have their own key controls without changing the base class's behavior.
@@ -52,9 +55,11 @@ public class Player : MonoBehaviour
     /// </summary>
     private void Awake()
     {
+        game = FindObjectOfType<Game>();
         rBody = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
-        startPos = transform.position;
+        StartPos = transform.position;
         InitializeAs(defaultPlayer); // learned from prefab!
     }
 
@@ -63,7 +68,7 @@ public class Player : MonoBehaviour
     /// </summary>
     private void Start()
     {
-        Reset();
+        ResetState();
     }
 
     /// <summary>
@@ -98,9 +103,9 @@ public class Player : MonoBehaviour
         }
 
         // then handle pre-existing movement queue
-        if (nextDir != Vector2.zero)
+        if (NextDir != Vector2.zero)
         {
-            SetDirection(nextDir);
+            SetDirection(NextDir);
         }
     }
 
@@ -110,7 +115,7 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         Vector2 pos = rBody.position;
-        Vector2 move = dir * baseSpeed * speedMultiplier * Time.fixedDeltaTime;
+        Vector2 move = Dir * baseSpeed * speedMultiplier * Time.fixedDeltaTime;
         rBody.MovePosition(pos + move);
     }
 
@@ -127,16 +132,19 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// Method <c>Reset</c> resets the player state to initial values.
+    /// Method <c>ResetState</c> resets the player state to initial values.
     /// </summary>
-    private void Reset()
+    /// <param name="isFullReset">a boolean indicating if we should also reset states that persist between levels.</param>
+    public void ResetState(bool isFullReset = false)
     {
         SetSpeed(1f);
         SetDirection(startDir, true);
-        nextDir = Vector2.zero;
-        transform.position = startPos;
+        NextDir = Vector2.zero;
+        transform.position = StartPos;
         rBody.isKinematic = false;
         enabled = true;
+        ResetMode();
+        if (isFullReset) SetScore(0);
     }
 
     /// <summary>
@@ -148,15 +156,15 @@ public class Player : MonoBehaviour
     {
         if (forceSet || !IsBlocked(direction))
         {
-            dir = direction;
-            nextDir = Vector2.zero;
+            Dir = direction;
+            NextDir = Vector2.zero;
 
             // handle animation updates
             animator.SetInteger("Dir", Array.FindIndex(DIRS, d => d.Equals(direction)));
         } else
         {
             // queue the direction so we keep trying
-            nextDir = direction;
+            NextDir = direction;
         }
     }
 
@@ -171,6 +179,24 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
+    /// Method <c>SetScore</c> is a mutator for this player's internal score value.
+    /// </summary>
+    /// <param name="newScore">the new score value.</param>
+    private void SetScore(int newScore)
+    {
+        Score = newScore;
+    }
+
+    /// <summary>
+    /// Method <c>IncScore</c> increments this player's score by the given value.
+    /// </summary>
+    /// <param name="plusScore">the increment value for the score. <see cref="SetScore"/></param>
+    private void IncScore(int plusScore)
+    {
+        SetScore(Score  + plusScore);
+    }
+
+    /// <summary>
     /// Method <c>IsBlocked</c> checks a potential direction to see if the player can move that way.
     /// </summary>
     /// <param name="direction">the direction to be checked.</param>
@@ -179,5 +205,38 @@ public class Player : MonoBehaviour
     {
         RaycastHit2D hit = Physics2D.BoxCast(transform.position, Vector2.one * 0.9f, 0f, direction, 0.75f, obstacleLayer);
         return hit.collider != null;
+    }
+
+
+    public void EatPellet(Pellet pellet)
+    {
+        if (pellet is PowerPellet)
+        {
+            EnterEnemyMode(PowerPellet.DURATION);
+        }
+        IncScore(pellet.Points);
+        game.PelletEaten(pellet);
+    }
+
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        {
+            // player will eat us!
+        }
+    }
+
+    private void ResetMode()
+    {
+        gameObject.layer = LayerMask.NameToLayer("Player");
+        spriteRenderer.color = Color.white;
+    }
+
+    private void EnterEnemyMode(float duration)
+    {
+        gameObject.layer = LayerMask.NameToLayer("Enemy");
+        spriteRenderer.color = Color.red;
+        Invoke(nameof(ResetMode), duration);
     }
 }
