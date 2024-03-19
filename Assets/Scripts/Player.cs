@@ -1,11 +1,15 @@
+using System;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
 /// Class <c>Player</c> handles player logic.
-/// This class references code from <see href="https://www.youtube.com/watch?v=TKt_VlMn_aA"/>.
+/// This class references code from <see href="https://www.youtube.com/watch?v=TKt_VlMn_aA"/> and <see href="https://www.youtube.com/watch?v=hkaysu1Z-N8"/>.
 /// </summary>
 public class Player : MonoBehaviour
 {
+    private static readonly Vector2[] DIRS = { Vector2.up, Vector2.left, Vector2.down, Vector2.right };
+
     [SerializeField] private float baseSpeed = 2f;
     [SerializeField] private float speedMultiplier = 1f;
     [SerializeField] private Vector2 startDir;// = Vector2.zero;
@@ -13,7 +17,8 @@ public class Player : MonoBehaviour
     [SerializeField] private PlayerControls controls;
 
     private Rigidbody2D rBody;
-    
+    private Animator animator;
+
     public Vector2 dir { get; private set; }
     public Vector2 nextDir { get; private set; } // next direction is queued if we cannot move that way yet
     public Vector3 startPos { get; private set; }
@@ -44,6 +49,7 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         rBody = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
         startPos = transform.position;
     }
 
@@ -61,11 +67,12 @@ public class Player : MonoBehaviour
     /// </summary>
     private void Update()
     {
+        // first check for new user input
         if (Input.GetKeyDown(controls.up))
         {
             SetDirection(Vector2.up);
         }
-        else if(Input.GetKeyDown(controls.left))
+        else if (Input.GetKeyDown(controls.left))
         {
             SetDirection(Vector2.left);
         } else if (Input.GetKeyDown(controls.down))
@@ -76,6 +83,7 @@ public class Player : MonoBehaviour
             SetDirection(Vector2.right);
         }
 
+        // then handle pre-existing movement queue
         if (nextDir != Vector2.zero)
         {
             SetDirection(nextDir);
@@ -109,8 +117,8 @@ public class Player : MonoBehaviour
     /// </summary>
     private void Reset()
     {
-        speedMultiplier = 1f;
-        dir = startDir;
+        SetSpeed(1f);
+        SetDirection(startDir, true);
         nextDir = Vector2.zero;
         transform.position = startPos;
         rBody.isKinematic = false;
@@ -128,11 +136,24 @@ public class Player : MonoBehaviour
         {
             dir = direction;
             nextDir = Vector2.zero;
+
+            // handle animation updates
+            animator.SetInteger("Dir", Array.FindIndex(DIRS, d => d.Equals(direction)));
         } else
         {
             // queue the direction so we keep trying
             nextDir = direction;
         }
+    }
+
+    /// <summary>
+    /// Method <c>SetSpeed</c> sets the player's speed multiplier.
+    /// </summary>
+    /// <param name="speed">the player's new speed.</param>
+    private void SetSpeed(float speed)
+    {
+        speedMultiplier = speed;
+        animator.SetFloat("Speed", speed);
     }
 
     /// <summary>
