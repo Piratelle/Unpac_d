@@ -32,6 +32,9 @@ public class ConnectionApprovalHandler : MonoBehaviour
         {
             response.Approved = false;
             response.Reason = "Player limit reached.";
+        } else
+        {
+            // handle prefab assignment in here!
         }
         response.Pending = false;
     }
