@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -10,7 +9,7 @@ public class Player : MonoBehaviour
 {
     private static readonly Vector2[] DIRS = { Vector2.up, Vector2.left, Vector2.down, Vector2.right };
 
-    [SerializeField] private float baseSpeed = 2f;
+    [SerializeField] private float baseSpeed = 4f;
     [SerializeField] private float speedMultiplier = 1f;
     [SerializeField] private Vector2 startDir;// = Vector2.zero;
     [SerializeField] private LayerMask obstacleLayer;

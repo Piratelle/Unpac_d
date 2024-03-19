@@ -30,7 +30,7 @@ public class Game : MonoBehaviour
         }
     }
 
-    // functions needed: start a new game, pellet consumption, score updaters?, possible state reset for player death (may be better in Player), player collisions?
+    // functions needed: score updaters, player collisions (handle in Player?)
 
     /// <summary>
     /// Method <c>NewGame</c> resets all games states, whether level-based or game-based.
@@ -63,5 +63,40 @@ public class Game : MonoBehaviour
     {
         // TBD - called when ???
         isGameOver = true;
+    }
+
+    /// <summary>
+    /// Method <c>PelletEaten</c> handles state changes when a pellet is eaten.
+    /// </summary>
+    /// <param name="pellet"></param>
+    public void PelletEaten(Pellet pellet)
+    {
+        pellet.gameObject.SetActive(false);
+
+        if (pellet is PowerPellet)
+        {
+            // do more stuff
+        }
+
+        // update score
+
+        if (!HasPellets())
+        {
+            // turn off player objects
+            // new round? game over? consider: Invoke(nameOf(NewLevel), 3.0f);
+        }
+    }
+
+    /// <summary>
+    /// Method <c>HasPellets</c> verifies if any uneaten pellets remain on the board.
+    /// </summary>
+    /// <returns>True if there are uneaten pellet on the board, False otherwise.</returns>
+    private bool HasPellets()
+    {
+        foreach (Transform pellet in pellets)
+        {
+            if (pellet.gameObject.activeSelf) return true;
+        }
+        return false;
     }
 }
