@@ -21,4 +21,14 @@ public class AudioPlayer : Singleton<AudioPlayer>
     {
         btnHovAudioSrc.Play();
     }
+
+    public void PlayEat()
+    {
+        eatAudioSrc.Play();
+    }
+
+    public void PlayGameOver()
+    {
+        gameOverAudioSrc.Play();
+    }
 }

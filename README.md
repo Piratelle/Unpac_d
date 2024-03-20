@@ -22,10 +22,11 @@ Free for personal use:
 Used under OFL:
 * [Press Start 2P](https://fonts.google.com/specimen/Press+Start+2P)
 
-### Image Assets
+### Audio & Image Assets
 Using the **[GameDev Market RPG Humble Bundle](https://www.humblebundle.com/software/rpg-game-dev-bundle)** ([Licence](https://www.gamedevmarket.net/terms-conditions/#pro-licence)):
 * [2D Hand Painted - Dungeon Tileset](https://www.gamedevmarket.net/asset/2d-hand-painted-dungeon-tileset-3011)
 * [7Soul's RPG Graphics - UI Pack](https://www.gamedevmarket.net/asset/7souls-rpg-graphics-pack-2-ui-1208)
+* [Game Music Stingers and UI SFX Pack 2](https://www.gamedevmarket.net/asset/game-music-stingers-and-ui-sfx-pack-2)
 * [Monsters Time Fantasy RPG Sprite Pack](https://www.gamedevmarket.net/asset/monsters-time-fantasy-rpg-sprite-pack-4391)
 
 
