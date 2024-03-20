@@ -11,8 +11,9 @@ This project was developed in **Unity** using **Netcode for GameObjects** as a p
 
 ## External Resources
 
-### Unity Packages
-* [ParrelSync](https://github.com/VeriorPies/ParrelSync)
+### Classes & Packages
+* [Networked Singleton Class](https://gist.github.com/sam-yam/4a5a0460f51e2f7c066cb644504f8de0)
+* [ParrelSync Package](https://github.com/VeriorPies/ParrelSync)
 
 ### Font Assets
 Free for personal use:

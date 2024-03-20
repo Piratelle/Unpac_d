@@ -10,11 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 4804478626932376591}
   - component: {fileID: 4804478626932376590}
-  - component: {fileID: 4804478626932376588}
+  - component: {fileID: -3792821263827971}
   - component: {fileID: 4804478626932376589}
   - component: {fileID: 4804478626932376586}
   - component: {fileID: 4804478626932376584}
   - component: {fileID: 4804478626932376585}
+  - component: {fileID: -8722246987105214975}
   - component: {fileID: 4804478626932376582}
   m_Layer: 6
   m_Name: Player_Cindy
@@ -50,7 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2293996009
+  GlobalObjectIdHash: 428006104
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -58,7 +59,7 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &4804478626932376588
+--- !u!114 &-3792821263827971
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -67,7 +68,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4804478626932376689}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
+  m_Script: {fileID: 11500000, guid: df2868252ab5c4d1da357e8f11f1b524, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   SyncPositionX: 1
@@ -198,6 +199,18 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.25
+--- !u!114 &-8722246987105214975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4804478626932376689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80d7c879794dfda4687da0e400131852, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4804478626932376582
 MonoBehaviour:
   m_ObjectHideFlags: 0

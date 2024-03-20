@@ -1,13 +1,12 @@
 using System;
-using Unity.VisualScripting.FullSerializer;
+using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 /// <summary>
 /// Class <c>Player</c> handles player logic.
-/// This class references code from <see href="https://www.youtube.com/watch?v=TKt_VlMn_aA"/> and <see href="https://www.youtube.com/watch?v=hkaysu1Z-N8"/>.
+/// This class references code from <see href="https://www.youtube.com/watch?v=TKt_VlMn_aA"/>, <see href="https://www.youtube.com/watch?v=hkaysu1Z-N8"/>, and <see href="https://www.youtube.com/watch?v=3yuBOB3VrCk"/>.
 /// </summary>
-public class Player : MonoBehaviour
+public class Player : NetworkBehaviour
 {
     private static readonly Vector2[] DIRS = { Vector2.up, Vector2.left, Vector2.down, Vector2.right };
     private static readonly PlayerControls[] CTLS = { new(KeyCode.W, KeyCode.A, KeyCode.S, KeyCode.D)
@@ -17,7 +16,7 @@ public class Player : MonoBehaviour
 
     [SerializeField] private int defaultPlayer;
     [SerializeField] private float baseSpeed = 4f;
-    [SerializeField] private float speedMultiplier = 1f;
+    [SerializeField] private NetworkVariable<float> speedMultiplier = new(1f, writePerm: NetworkVariableWritePermission.Owner);
     [SerializeField] private LayerMask obstacleLayer;
 
     private Vector2 startDir;
@@ -28,7 +27,7 @@ public class Player : MonoBehaviour
     private Game game;
     private int currPlayer;
 
-    public Vector2 Dir { get; private set; }
+    public NetworkVariable<Vector2> Dir { get; private set; } = new(Vector2.zero, writePerm: NetworkVariableWritePermission.Owner);
     public Vector2 NextDir { get; private set; } // next direction is queued if we cannot move that way yet
     public Vector3 StartPos { get; private set; }
     public int Score { get; private set; }
@@ -40,17 +39,17 @@ public class Player : MonoBehaviour
     [System.Serializable]
     public struct PlayerControls
     {
-        public KeyCode up { get; private set; }
-        public KeyCode left { get; private set; }
-        public KeyCode down { get; private set; }
-        public KeyCode right { get; private set; }
+        public KeyCode Up { get; private set; }
+        public KeyCode Left { get; private set; }
+        public KeyCode Down { get; private set; }
+        public KeyCode Right { get; private set; }
 
         public PlayerControls(KeyCode upKey, KeyCode leftKey, KeyCode downKey, KeyCode rightKey)
         {
-            up = upKey;
-            left = leftKey;
-            down = downKey;
-            right = rightKey;
+            Up = upKey;
+            Left = leftKey;
+            Down = downKey;
+            Right = rightKey;
         }
     }
 
@@ -92,18 +91,19 @@ public class Player : MonoBehaviour
     /// </summary>
     private void Update()
     {
+        if (!IsOwner) return;
         // first check for new user input
-        if (Input.GetKeyDown(controls.up))
+        if (Input.GetKeyDown(controls.Up))
         {
             SetDirection(Vector2.up);
         }
-        else if (Input.GetKeyDown(controls.left))
+        else if (Input.GetKeyDown(controls.Left))
         {
             SetDirection(Vector2.left);
-        } else if (Input.GetKeyDown(controls.down))
+        } else if (Input.GetKeyDown(controls.Down))
         {
             SetDirection(Vector2.down);
-        } else if (Input.GetKeyDown(controls.right))
+        } else if (Input.GetKeyDown(controls.Right))
         {
             SetDirection(Vector2.right);
         }
@@ -120,8 +120,9 @@ public class Player : MonoBehaviour
     /// </summary>
     private void FixedUpdate()
     {
+        if (!IsOwner) return;
         Vector2 pos = rBody.position;
-        Vector2 move = Dir * baseSpeed * speedMultiplier * Time.fixedDeltaTime;
+        Vector2 move = Dir.Value * baseSpeed * speedMultiplier.Value * Time.fixedDeltaTime;
         rBody.MovePosition(pos + move);
     }
 
@@ -169,7 +170,7 @@ public class Player : MonoBehaviour
     {
         if (forceSet || !IsBlocked(direction))
         {
-            Dir = direction;
+            Dir.Value = direction;
             NextDir = Vector2.zero;
 
             // handle animation updates
@@ -187,7 +188,7 @@ public class Player : MonoBehaviour
     /// <param name="speed">the player's new speed.</param>
     private void SetSpeed(float speed)
     {
-        speedMultiplier = speed;
+        speedMultiplier.Value = speed;
         animator.SetFloat("Speed", speed);
     }
 
