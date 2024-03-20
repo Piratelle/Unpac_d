@@ -1,17 +1,19 @@
 using TMPro;
+using Unity.Netcode;
 using UnityEngine;
 
 /// <summary>
 /// Class <c>Game</c> handles shared game state logic.
 /// This class references code from <see href="https://www.youtube.com/watch?v=TKt_VlMn_aA"/>.
 /// </summary>
-public class Game : MonoBehaviour
+public class Game : NetworkBehaviour
 {
     [SerializeField] private Transform pellets;
     [SerializeField] private GameObject[] playerPanels;
     [SerializeField] private TMP_Text playersLabel;
+    [SerializeField] private Canvas newGameCanvas;
 
-    public bool IsGameOver { get; private set; } = true; // default to true for purposes of allowing new player connections
+    public NetworkVariable<bool> IsGameOver { get; private set; } = new(true); // default to true for purposes of allowing new player connections
 
     private int playerCount = 0;
 
@@ -94,8 +96,27 @@ public class Game : MonoBehaviour
     /// </summary>
     public void NewGame()
     {
-        IsGameOver = false;
+        NewGameServerRpc();
+    }
+
+    /// <summary>
+    /// Method <c>NewGameServerRpc</c> handles server-based game launch updates.
+    /// </summary>
+    [ServerRpc(RequireOwnership = false)]
+    private void NewGameServerRpc()
+    {
+        IsGameOver.Value = false;
+        NewGameClientRpc();
+    }
+
+    /// <summary>
+    /// Method <c>NewGameClientRpc</c> handles post-server update client-based game launch updates.
+    /// </summary>
+    [ClientRpc]
+    private void NewGameClientRpc()
+    {
         NewLevel();
+        newGameCanvas.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -118,7 +139,27 @@ public class Game : MonoBehaviour
     private void GameOver()
     {
         // TBD - called when ???
-        IsGameOver = true;
+        GameOverServerRpc();
+        // don't forget to pop up the GameOver UI and the NewGame UI!
+    }
+
+    /// <summary>
+    /// Method <c>GameOverServerRpc</c> handles server-based game end updates.
+    /// </summary>
+    [ServerRpc]
+    private void GameOverServerRpc()
+    {
+        IsGameOver.Value = true;
+        GameOverClientRpc();
+    }
+
+    /// <summary>
+    /// Method <c>GameOverClientRpc</c> handles post-server update client-based game end updates.
+    /// </summary>
+    [ClientRpc]
+    private void GameOverClientRpc()
+    {
+        newGameCanvas.gameObject.SetActive(true);
     }
 
     /// <summary>

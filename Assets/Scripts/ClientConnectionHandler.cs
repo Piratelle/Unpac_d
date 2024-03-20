@@ -45,7 +45,7 @@ public class ClientConnectionHandler : MonoBehaviour
         {
             response.Approved = false;
             response.Reason = "Player limit reached.";
-        } else if (!game.IsGameOver)
+        } else if (!game.IsGameOver.Value)
         {
             response.Approved= false;
             response.Reason = "Game in progress, new connections disabled.";
