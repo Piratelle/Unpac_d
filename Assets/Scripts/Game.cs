@@ -149,7 +149,7 @@ public class Game : NetworkBehaviour
     [ServerRpc]
     private void GameOverServerRpc()
     {
-        AudioManager.Instance.PlayGameOver();
+        AudioPlayer.Instance.PlayGameOver();
         IsGameOver.Value = true;
         GameOverClientRpc();
     }
