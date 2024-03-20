@@ -2,6 +2,7 @@ using UnityEngine;
 using Unity.Netcode;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.PackageManager.Requests;
 
 /// <summary>
 /// Class <c>ClientConnectionHandler</c> provides control logic to limit new client connections.
@@ -54,7 +55,7 @@ public class ClientConnectionHandler : MonoBehaviour
             availablePlayers.Remove(playerNum);
             response.PlayerPrefabHash = playerPrefabs[playerNum];
             clientPlayers.Add(request.ClientNetworkId, playerNum);
-            Debug.Log("Connection approved as Player " + (playerNum + 1));
+            Debug.Log("Connection from Client " + request.ClientNetworkId + " approved as Player " + (playerNum + 1));
         }
         response.Pending = false;
     }
@@ -69,5 +70,6 @@ public class ClientConnectionHandler : MonoBehaviour
         clientPlayers.Remove(clientId);
         availablePlayers.Add(playerNum);
         game.Deactivate(playerNum);
+        Debug.Log("Client " + clientId + " disconnected from Player " + (playerNum + 1));
     }
 }

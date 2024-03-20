@@ -8163,6 +8163,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1046484821}
   - component: {fileID: 1046484820}
+  - component: {fileID: 1046484822}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -8204,6 +8205,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1046484822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1046484819}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 778043937
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!1 &1052855554
 GameObject:
   m_ObjectHideFlags: 0
@@ -8592,6 +8613,7 @@ GameObject:
   - component: {fileID: 1150534366}
   - component: {fileID: 1150534365}
   - component: {fileID: 1150534369}
+  - component: {fileID: 1150534370}
   m_Layer: 5
   m_Name: StartCanvas
   m_TagString: Untagged
@@ -8698,6 +8720,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 514dac0106999884abff10efee2d00ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1150534370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1150534364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 3899909846
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!1 &1160129454
 GameObject:
   m_ObjectHideFlags: 0
@@ -11755,7 +11797,7 @@ MonoBehaviour:
     PlayerPrefab: {fileID: 1126563987207695868, guid: f0bd417fa4c020142a4945547e65974b, type: 3}
     Prefabs:
       NetworkPrefabsLists:
-      - {fileID: 11400000, guid: 524f415794528524a9df2e1bbd66d38a, type: 2}
+      - {fileID: 11400000, guid: c6caeff685867c4409becbf6bd70b2e1, type: 2}
     TickRate: 30
     ClientConnectionBufferTimeout: 10
     ConnectionApproval: 1
@@ -11815,6 +11857,7 @@ GameObject:
   - component: {fileID: 1422853371}
   - component: {fileID: 1422853370}
   - component: {fileID: 1422853369}
+  - component: {fileID: 1422853373}
   m_Layer: 5
   m_Name: NewGameCanvas
   m_TagString: Untagged
@@ -11909,6 +11952,26 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1422853373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1422853368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 722463659
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!1 &1473979428
 GameObject:
   m_ObjectHideFlags: 0

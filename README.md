@@ -11,6 +11,9 @@ This project was developed in **Unity** using **Netcode for GameObjects** as a p
 
 ## External Resources
 
+### Unity Packages
+* [ParrelSync](https://github.com/VeriorPies/ParrelSync)
+
 ### Font Assets
 Free for personal use:
 * [Pac-Font](https://www.dafont.com/pacfont.font)
