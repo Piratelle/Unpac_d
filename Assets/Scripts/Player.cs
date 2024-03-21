@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.CompilerServices;
 using Unity.Netcode;
 using Unity.Netcode.Components;
 using UnityEngine;
@@ -82,6 +81,12 @@ public class Player : NetworkBehaviour
         BankedScore.OnValueChanged += BankedChanged;
         InitializeAs(defaultPlayer); // learned from prefab!
         ResetState();
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        base.OnNetworkDespawn();
+        game.Deactivate(currPlayer);
     }
 
     /// <summary>

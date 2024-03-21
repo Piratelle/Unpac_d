@@ -8,6 +8,7 @@ using UnityEngine;
 /// </summary>
 public class Game : NetworkBehaviour
 {
+    #region Variables
     [SerializeField] private Transform pellets;
     [SerializeField] private GameObject[] playerPanels;
     [SerializeField] private TMP_Text playersLabel;
@@ -16,6 +17,7 @@ public class Game : NetworkBehaviour
     public NetworkVariable<bool> IsGameOver { get; private set; } = new(true); // default to true for purposes of allowing new player connections
 
     private int playerCount = 0;
+    #endregion
 
     /// <summary>
     /// Method <c>Activate</c> activates the UI for the provided player number.
@@ -44,9 +46,9 @@ public class Game : NetworkBehaviour
     {
         if (playerNum <= playerPanels.Length && playerNum >= 0)
         {
-            playerPanels[playerNum].SetActive(true);
+            playerPanels[playerNum].SetActive(isActive);
             playerCount += isActive ? 1 : -1;
-            playersLabel.text = playerCount.ToString() + "/4";
+            playersLabel.text = playerCount.ToString() + "/" + ClientConnectionHandler.Instance.MaxPlayers();
         }
     }
 

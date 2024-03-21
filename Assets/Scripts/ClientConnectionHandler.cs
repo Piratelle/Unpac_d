@@ -8,7 +8,7 @@ using UnityEditor.PackageManager.Requests;
 /// Class <c>ClientConnectionHandler</c> provides control logic to limit new client connections.
 /// This class heavily references code from <see href="https://www.youtube.com/watch?v=swIM2z6Foxk"/>.
 /// </summary>
-public class ClientConnectionHandler : MonoBehaviour
+public class ClientConnectionHandler : Singleton<ClientConnectionHandler>
 {
     [SerializeField] private List<uint> playerPrefabs;
     [SerializeField] private Game game;
@@ -41,7 +41,7 @@ public class ClientConnectionHandler : MonoBehaviour
         response.Approved = true;
         response.CreatePlayerObject = true;
         //response.PlayerPrefabHash = null;
-        if (NetworkManager.Singleton.ConnectedClients.Count >= playerPrefabs.Count)
+        if (NetworkManager.Singleton.ConnectedClients.Count >= MaxPlayers())
         {
             response.Approved = false;
             response.Reason = "Player limit reached.";
@@ -58,6 +58,7 @@ public class ClientConnectionHandler : MonoBehaviour
             response.PlayerPrefabHash = playerPrefabs[playerNum];
             clientPlayers.Add(request.ClientNetworkId, playerNum);
             Debug.Log("Connection from Client " + request.ClientNetworkId + " approved as Player " + (playerNum + 1));
+            Debug.Log("Currently available: " + GetAvailable());
         }
         response.Pending = false;
     }
@@ -68,11 +69,35 @@ public class ClientConnectionHandler : MonoBehaviour
     /// <param name="clientId">the network ID of the client that is disconnecting.</param>
     private void DisconnectPlayer(ulong clientId)
     {
-        Debug.Log("Client " + clientId + " disconnecting...");
+        if (clientPlayers.Count == 0) return; // connections are only tracked on the server!
+
         int playerNum = clientPlayers[clientId];
         clientPlayers.Remove(clientId);
         availablePlayers.Add(playerNum);
-        game.Deactivate(playerNum);
-        Debug.Log("Client " + clientId + " disconnected from Player " + (playerNum + 1));
+        Debug.Log("Client " + clientId + " disconnected from Player " + playerNum + ", now available: " + GetAvailable());
+    }
+
+    /// <summary>
+    /// Method <c>GetAvailable</c> acts as a ToString() accessor for the list of currently available player slots.
+    /// </summary>
+    /// <returns>a string representation of the currently available player slots.</returns>
+    private string GetAvailable()
+    {
+        string available = "[";
+        foreach (int player in availablePlayers)
+        {
+            available += " " + (player + 1);
+        }
+        available += " ]";
+        return available;
+    }
+
+    /// <summary>
+    /// Method <c>MaxPlayers</c> acts as an accessor for maximum number of players permitted.
+    /// </summary>
+    /// <returns>the maximum number of players permitted.</returns>
+    public int MaxPlayers()
+    {
+        return playerPrefabs.Count;
     }
 }
