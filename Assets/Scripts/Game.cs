@@ -15,12 +15,14 @@ public class Game : NetworkBehaviour
     [SerializeField] private Canvas newGameCanvas;
 
     public NetworkVariable<bool> IsGameOver { get; private set; } = new(true); // default to true for purposes of allowing new player connections
+    public NetworkVariable<int> Level { get; private set; } = new(0);
 
     private int playerCount = 0;
     #endregion
 
+    #region Player UI
     /// <summary>
-    /// Method <c>Activate</c> activates the UI for the provided player number.
+    /// Method <c>Activate</c> activates the UI for the provided player number. <see cref="SetPlayer"/>.
     /// </summary>
     /// <param name="playerNum">the player whose UI should be activated.</param>
     public void Activate(int playerNum)
@@ -29,7 +31,7 @@ public class Game : NetworkBehaviour
     }
 
     /// <summary>
-    /// Method <c>Deactivate</c> deactivates the UI for the provided player number.
+    /// Method <c>Deactivate</c> deactivates the UI for the provided player number. <see cref="SetPlayer"/>.
     /// </summary>
     /// <param name="playerNum">the player whose UI should be deactivated.</param>
     public void Deactivate(int playerNum)
@@ -92,7 +94,9 @@ public class Game : NetworkBehaviour
             }
         }
     }
+    #endregion
 
+    #region New Game/Level
     /// <summary>
     /// Method <c>NewGame</c> resets all games states, whether level-based or game-based.
     /// </summary>
@@ -107,6 +111,7 @@ public class Game : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     private void NewGameServerRpc()
     {
+        Level.Value = 0;
         IsGameOver.Value = false;
         NewGameClientRpc();
     }
@@ -126,23 +131,23 @@ public class Game : NetworkBehaviour
     /// </summary>
     private void NewLevel()
     {
+        if (IsServer) Level.Value++;
+
         // handle pellet re-population
         foreach (Transform pellet in pellets)
         {
             pellet.gameObject.SetActive(true);
         }
-
-        // reset players... how??
     }
+    #endregion
 
+    #region Game Over
     /// <summary>
     /// Method <c>GameOver</c> handles state cleanup when the game is over.
     /// </summary>
     private void GameOver()
     {
-        // TBD - called when ???
         GameOverServerRpc();
-        // don't forget to pop up the GameOver UI and the NewGame UI!
     }
 
     /// <summary>
@@ -164,7 +169,9 @@ public class Game : NetworkBehaviour
     {
         newGameCanvas.gameObject.SetActive(true);
     }
+    #endregion
 
+    #region Pellets
     /// <summary>
     /// Method <c>PelletEaten</c> handles game state changes when a pellet is eaten.
     /// </summary>
@@ -172,8 +179,8 @@ public class Game : NetworkBehaviour
     {
         if (!HasPellets())
         {
-            // turn off player object(s) to make sure they don't get eaten after level/game is over
-            // new round? game over? consider: Invoke(nameof(NewLevel), 3.0f);
+            // potentially increment level here if we think of more fun logic
+            GameOver();
         }
     }
 
@@ -189,4 +196,5 @@ public class Game : NetworkBehaviour
         }
         return false;
     }
+    #endregion
 }

@@ -20,6 +20,12 @@ public class Player : NetworkBehaviour
     [SerializeField] private float baseSpeed = 4f;
     [SerializeField] private LayerMask obstacleLayer;
 
+    public NetworkVariable<Vector2> Dir { get; private set; } = new(Vector2.zero, writePerm: NetworkVariableWritePermission.Owner);
+    public NetworkVariable<Vector2> NextDir { get; private set; } = new(Vector2.zero, writePerm: NetworkVariableWritePermission.Owner);
+    public NetworkVariable<float> SpeedMultiplier { get; private set; } = new(0f, writePerm: NetworkVariableWritePermission.Owner);
+    public NetworkVariable<int> Score { get; private set; } = new(0, writePerm: NetworkVariableWritePermission.Owner);
+    public NetworkVariable<int> BankedScore { get; private set; } = new(0, writePerm: NetworkVariableWritePermission.Owner);
+
     private Vector2 startDir;
     private Vector3 startPos;
     private Rigidbody2D rBody;
@@ -28,12 +34,6 @@ public class Player : NetworkBehaviour
     private PlayerControls controls;
     private Game game;
     private int currPlayer;
-
-    public NetworkVariable<Vector2> Dir { get; private set; } = new(Vector2.zero, writePerm: NetworkVariableWritePermission.Owner);
-    public NetworkVariable<Vector2> NextDir { get; private set; } = new(Vector2.zero, writePerm: NetworkVariableWritePermission.Owner);
-    public NetworkVariable<float> SpeedMultiplier { get; private set; } = new(1f, writePerm: NetworkVariableWritePermission.Owner);
-    public NetworkVariable<int> Score { get; private set; } = new(0, writePerm: NetworkVariableWritePermission.Owner);
-    public NetworkVariable<int> BankedScore {  get; private set; } = new(0, writePerm: NetworkVariableWritePermission.Owner);
     #endregion
 
     #region Player Controls (Struct)
@@ -79,10 +79,15 @@ public class Player : NetworkBehaviour
         Dir.OnValueChanged += DirChanged;
         Score.OnValueChanged += ScoreChanged;
         BankedScore.OnValueChanged += BankedChanged;
+        game.IsGameOver.OnValueChanged += GameOverChanged;
+        game.Level.OnValueChanged += LevelChanged;
         InitializeAs(defaultPlayer); // learned from prefab!
-        ResetState();
+        //ResetState();
     }
 
+    /// <summary>
+    /// Method <c>OnNetworkDespawn</c> handles game state clean-up when a player disconnects.
+    /// </summary>
     public override void OnNetworkDespawn()
     {
         base.OnNetworkDespawn();
@@ -98,7 +103,6 @@ public class Player : NetworkBehaviour
         currPlayer = playerNum;
         SetControls(playerNum);
         startDir = DIRS[2 * (playerNum % 2) + 1];
-        game.Activate(playerNum);
     }
 
     /// <summary>
@@ -123,7 +127,6 @@ public class Player : NetworkBehaviour
         SetSpeed(1f);
         SetDirection(startDir, true);
         transform.position = startPos;
-        enabled = true;
         ResetMode();
         if (isFullReset)
         {
@@ -135,6 +138,38 @@ public class Player : NetworkBehaviour
             IncBanked(Score.Value);
         }
         SetScore(0);
+    }
+    #endregion
+
+    #region Game State Changes
+    /// <summary>
+    /// Method <c>GameOverChanged</c> handles player state updates when a game launches or terminates.
+    /// </summary>
+    /// <param name="previousValue">the previous state of game over-ness.</param>
+    /// <param name="newValue">the new state of game over-ness.</param>
+    private void GameOverChanged(bool previousValue, bool newValue)
+    {
+        if (newValue)
+        {
+            // Game Over!
+            SetSpeed(0f);
+            EnterDeadMode();
+        } else
+        {
+            // New Game!
+            game.Activate(currPlayer);
+            ResetState(true);
+        }
+    }
+
+    /// <summary>
+    /// Method <c>LevelChanged</c> handles player state updates when a new level is reached.
+    /// </summary>
+    /// <param name="previousValue">the previous level.</param>
+    /// <param name="newValue">the new level.</param>
+    private void LevelChanged(int previousValue, int newValue)
+    {
+        if (newValue > 0) ResetState(); // don't need to re-do work handled by GameOver state change
     }
     #endregion
 
@@ -371,11 +406,11 @@ public class Player : NetworkBehaviour
     /// Method <c>EnterDeadMode</c> sends this player to the graveyard.
     /// </summary>
     /// <param name="duration">the duration before the mode resets.</param>
-    private void EnterDeadMode(float duration)
+    private void EnterDeadMode(float duration = 0f)
     {
         gameObject.layer = LayerMask.NameToLayer("Ghost");
         spriteRenderer.color = Color.gray;
-        Invoke(nameof(ResetMode), duration);
+        if (duration > 0) Invoke(nameof(ResetMode), duration);
     }
     #endregion
 }
