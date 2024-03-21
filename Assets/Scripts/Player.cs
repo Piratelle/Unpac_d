@@ -421,6 +421,7 @@ public class Player : NetworkBehaviour
         gameObject.layer = LayerMask.NameToLayer("Enemy");
         spriteRenderer.color = Color.red;
         SetSpeed(1.1f);
+        CancelInvoke();
         Invoke(nameof(ResetMode), duration);
         if (IsOwner) EnemyModeServerRpc(duration);
     }
@@ -444,6 +445,7 @@ public class Player : NetworkBehaviour
         gameObject.layer = LayerMask.NameToLayer("Ghost");
         spriteRenderer.color = Color.gray;
         SetSpeed(.5f);
+        CancelInvoke();
         if (duration > 0) Invoke(nameof(ResetMode), duration);
     }
     #endregion
