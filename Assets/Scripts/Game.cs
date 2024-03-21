@@ -11,13 +11,18 @@ public class Game : NetworkBehaviour
     #region Variables
     [SerializeField] private Transform pellets;
     [SerializeField] private GameObject[] playerPanels;
+    [SerializeField] private GameObject[] playerFinals;
     [SerializeField] private TMP_Text playersLabel;
+    [SerializeField] private TMP_Text winnerLabel;
     [SerializeField] private Canvas newGameCanvas;
+    [SerializeField] private Canvas gameOverCanvas;
 
     public NetworkVariable<bool> IsGameOver { get; private set; } = new(true); // default to true for purposes of allowing new player connections
     public NetworkVariable<int> Level { get; private set; } = new(0);
 
     private int playerCount = 0;
+    private int winningScore = 0;
+    private int winningPlayer = 0;
     #endregion
 
     #region Player UI
@@ -49,6 +54,7 @@ public class Game : NetworkBehaviour
         if (playerNum <= playerPanels.Length && playerNum >= 0)
         {
             playerPanels[playerNum].SetActive(isActive);
+            playerFinals[playerNum].SetActive(isActive);
             playerCount += isActive ? 1 : -1;
             playersLabel.text = playerCount.ToString() + "/" + ClientConnectionHandler.Instance.MaxPlayers();
         }
@@ -94,6 +100,32 @@ public class Game : NetworkBehaviour
             }
         }
     }
+
+    /// <summary>
+    /// Method <c>UpdatePlayerFinalScore</c> handles the UI component of a final score update.
+    /// </summary>
+    /// <param name="playerNum">the player whose final score will be updated.</param>
+    /// <param name="score">the new final score value.</param>
+    public void UpdatePlayerFinalScore(int playerNum, int score)
+    {
+        if (score > winningScore)
+        {
+            winningScore = score;
+            winningPlayer = playerNum + 1;
+        }
+        if (playerNum <= playerFinals.Length && playerNum >= 0)
+        {
+            GameObject playerPanel = playerFinals[playerNum];
+            foreach (TMP_Text text in playerPanel.GetComponentsInChildren<TMP_Text>())
+            {
+                if (text.name == "Score")
+                {
+                    text.text = score.ToString();
+                    return;
+                }
+            }
+        }
+    }
     #endregion
 
     #region New Game/Level
@@ -124,6 +156,8 @@ public class Game : NetworkBehaviour
     {
         NewLevel();
         newGameCanvas.gameObject.SetActive(false);
+        winningPlayer = 0;
+        winningScore = 0;
     }
 
     /// <summary>
@@ -167,6 +201,7 @@ public class Game : NetworkBehaviour
     [ClientRpc]
     private void GameOverClientRpc()
     {
+        gameOverCanvas.gameObject.SetActive (true);
         newGameCanvas.gameObject.SetActive(true);
     }
     #endregion

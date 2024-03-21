@@ -116,7 +116,9 @@ public class Player : NetworkBehaviour
             controls = CTLS[ctrlIndex];
         }
     }
+    #endregion
 
+    #region State Changes
     /// <summary>
     /// Method <c>ResetState</c> resets the player state to initial values.
     /// </summary>
@@ -131,17 +133,15 @@ public class Player : NetworkBehaviour
         if (isFullReset)
         {
             SetBanked(0);
+            SetScore(0);
         }
         else
         {
             // bank score between levels
-            IncBanked(Score.Value);
+            BankScore();
         }
-        SetScore(0);
     }
-    #endregion
 
-    #region Game State Changes
     /// <summary>
     /// Method <c>GameOverChanged</c> handles player state updates when a game launches or terminates.
     /// </summary>
@@ -154,6 +154,8 @@ public class Player : NetworkBehaviour
             // Game Over!
             SetSpeed(0f);
             EnterDeadMode();
+            BankScore();
+            game.UpdatePlayerFinalScore(currPlayer, BankedScore.Value);
         } else
         {
             // New Game!
@@ -329,6 +331,15 @@ public class Player : NetworkBehaviour
     private void IncBanked(int plusBanked)
     {
         if (IsOwner) SetBanked(BankedScore.Value + plusBanked);
+    }
+
+    /// <summary>
+    /// Method <c>BankScore</c> transfers this player's non-banked score into their banked score.
+    /// </summary>
+    private void BankScore()
+    {
+        IncBanked(Score.Value);
+        if (IsOwner) SetScore(0);
     }
 
     /// <summary>
