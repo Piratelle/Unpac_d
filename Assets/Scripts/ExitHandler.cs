@@ -19,7 +19,7 @@ public class ExitHandler : MonoBehaviour
         position.x = target.position.x;
         position.y = target.position.y;
 
-        if (collision.TryGetComponent<Player>(out Player player))
+        if (collision.TryGetComponent(out Player player))
         {
             player.TeleportTo(position);
         } else

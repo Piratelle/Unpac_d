@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using Unity.Netcode;
 using Unity.Netcode.Components;
 using UnityEngine;
@@ -77,6 +78,8 @@ public class Player : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         Dir.OnValueChanged += DirChanged;
+        Score.OnValueChanged += ScoreChanged;
+        BankedScore.OnValueChanged += BankedChanged;
         InitializeAs(defaultPlayer); // learned from prefab!
         ResetState();
     }
@@ -189,11 +192,15 @@ public class Player : NetworkBehaviour
         }
     }
 
+    /// <summary>
+    /// Method <c>DirChanged</c> handles the animation updates resulting from a change in direction.
+    /// </summary>
+    /// <param name="previousValue">the previous direction.</param>
+    /// <param name="newValue">the new direction.</param>
     private void DirChanged(Vector2 previousValue, Vector2 newValue)
     {
         // handle animation updates
         animator.SetInteger("Dir", Array.FindIndex(DIRS, d => d.Equals(newValue)));
-        Debug.Log("Player " + currPlayer.ToString() + " animator dir now: " + animator.GetInteger("Dir").ToString());
     }
 
     /// <summary>
@@ -246,7 +253,6 @@ public class Player : NetworkBehaviour
     private void SetScore(int newScore)
     {
         Score.Value = newScore;
-        game.UpdatePlayerScore(currPlayer, Score.Value);
     }
 
     /// <summary>
@@ -255,7 +261,17 @@ public class Player : NetworkBehaviour
     /// <param name="plusScore">the increment value for the score. <see cref="SetScore"/></param>
     private void IncScore(int plusScore)
     {
-        SetScore(Score.Value + plusScore);
+        if (IsOwner) SetScore(Score.Value + plusScore);
+    }
+
+    /// <summary>
+    /// Method <c>ScoreChanged</c> notifies the game whenever a player's score is changed.
+    /// </summary>
+    /// <param name="previousValue">the previous score.</param>
+    /// <param name="newValue">the new score.</param>
+    private void ScoreChanged(int previousValue, int newValue)
+    {
+        game.UpdatePlayerScore(currPlayer, Score.Value);
     }
 
     /// <summary>
@@ -265,7 +281,6 @@ public class Player : NetworkBehaviour
     private void SetBanked(int newBanked)
     {
         BankedScore.Value = newBanked;
-        game.UpdatePlayerBanked(currPlayer, BankedScore.Value);
     }
 
     /// <summary>
@@ -274,7 +289,17 @@ public class Player : NetworkBehaviour
     /// <param name="plusBanked">the increment value for the banked score. <see cref="SetBanked"/></param>
     private void IncBanked(int plusBanked)
     {
-        SetBanked(BankedScore.Value + plusBanked);
+        if (IsOwner) SetBanked(BankedScore.Value + plusBanked);
+    }
+
+    /// <summary>
+    /// Method <c>BankedChanged</c> notifies the game whenever a player's banked score is changed.
+    /// </summary>
+    /// <param name="previousValue">the previous banked score.</param>
+    /// <param name="newValue">the new banked score.</param>
+    private void BankedChanged(int previousValue, int newValue)
+    {
+        game.UpdatePlayerBanked(currPlayer, BankedScore.Value);
     }
     #endregion
 
