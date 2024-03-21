@@ -1,6 +1,8 @@
 using TMPro;
 using Unity.Netcode;
+using UnityEditor.U2D.Path.GUIFramework;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 /// <summary>
 /// Class <c>Game</c> handles shared game state logic.
@@ -78,6 +80,7 @@ public class Game : NetworkBehaviour
     public void UpdatePlayerBanked(int playerNum, int banked)
     {
         UpdatePlayerText(playerNum, "Bank", banked);
+        UpdatePlayerFinalScore(playerNum, banked);
     }
 
     /// <summary>
@@ -112,6 +115,7 @@ public class Game : NetworkBehaviour
         {
             winningScore = score;
             winningPlayer = playerNum + 1;
+            winnerLabel.text = "WINNER: Player " + (playerNum + 1) + "!";
         }
         if (playerNum <= playerFinals.Length && playerNum >= 0)
         {
@@ -156,6 +160,7 @@ public class Game : NetworkBehaviour
     {
         NewLevel();
         newGameCanvas.gameObject.SetActive(false);
+        gameOverCanvas.gameObject.SetActive(false);
         winningPlayer = 0;
         winningScore = 0;
     }
@@ -176,6 +181,20 @@ public class Game : NetworkBehaviour
     #endregion
 
     #region Game Over
+    /// <summary>
+    /// Method <c>Update</c> scans for any user input that might impact game state.
+    /// </summary>
+    private void Update()
+    {
+        if (IsGameOver.Value && gameOverCanvas.gameObject.activeSelf)
+        {
+            if (Input.anyKeyDown)
+            {
+                HideGameOverServerRpc();
+            }
+        }
+    }
+
     /// <summary>
     /// Method <c>GameOver</c> handles state cleanup when the game is over.
     /// </summary>
@@ -201,8 +220,26 @@ public class Game : NetworkBehaviour
     [ClientRpc]
     private void GameOverClientRpc()
     {
-        gameOverCanvas.gameObject.SetActive (true);
+        gameOverCanvas.gameObject.SetActive(true);
         newGameCanvas.gameObject.SetActive(true);
+    }
+
+    /// <summary>
+    /// Method <c>HideGameOverServerRpc</c> tells the server to hide the Game Over screen.
+    /// </summary>
+    [ServerRpc(RequireOwnership = false)]
+    private void HideGameOverServerRpc()
+    {
+        HideGameOverClientRpc();
+    }
+
+    /// <summary>
+    /// Method <c>HideGameOverClientRpc</c> tells the clients to hide the Game Over screen.
+    /// </summary>
+    [ClientRpc]
+    private void HideGameOverClientRpc()
+    {
+        gameOverCanvas.gameObject.SetActive(false);
     }
     #endregion
 

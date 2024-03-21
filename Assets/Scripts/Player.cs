@@ -152,10 +152,9 @@ public class Player : NetworkBehaviour
         if (newValue)
         {
             // Game Over!
-            SetSpeed(0f);
             EnterDeadMode();
+            if (IsOwner) SetSpeed(0f);
             BankScore();
-            game.UpdatePlayerFinalScore(currPlayer, BankedScore.Value);
         } else
         {
             // New Game!
