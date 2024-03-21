@@ -82,7 +82,6 @@ public class Player : NetworkBehaviour
         game.IsGameOver.OnValueChanged += GameOverChanged;
         game.Level.OnValueChanged += LevelChanged;
         InitializeAs(defaultPlayer); // learned from prefab!
-        //ResetState();
     }
 
     /// <summary>
@@ -103,6 +102,7 @@ public class Player : NetworkBehaviour
         currPlayer = playerNum;
         SetControls(playerNum);
         startDir = DIRS[2 * (playerNum % 2) + 1];
+        game.Activate(currPlayer);
     }
 
     /// <summary>
@@ -157,7 +157,6 @@ public class Player : NetworkBehaviour
         } else
         {
             // New Game!
-            game.Activate(currPlayer);
             ResetState(true);
         }
     }
