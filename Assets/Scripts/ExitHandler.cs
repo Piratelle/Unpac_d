@@ -19,10 +19,8 @@ public class ExitHandler : MonoBehaviour
         position.x = target.position.x;
         position.y = target.position.y;
 
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Player") ||
-            collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        if (collision.TryGetComponent<Player>(out Player player))
         {
-            Player player = collision.GetComponent<Player>();
             player.TeleportTo(position);
         } else
         {

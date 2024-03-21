@@ -18,10 +18,10 @@ public class Player : NetworkBehaviour
 
     [SerializeField] private int defaultPlayer;
     [SerializeField] private float baseSpeed = 4f;
-    [SerializeField] private NetworkVariable<float> speedMultiplier = new(1f, writePerm: NetworkVariableWritePermission.Owner);
     [SerializeField] private LayerMask obstacleLayer;
 
     private Vector2 startDir;
+    private Vector3 startPos;
     private Rigidbody2D rBody;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
@@ -30,10 +30,10 @@ public class Player : NetworkBehaviour
     private int currPlayer;
 
     public NetworkVariable<Vector2> Dir { get; private set; } = new(Vector2.zero, writePerm: NetworkVariableWritePermission.Owner);
-    public Vector2 NextDir { get; private set; } // next direction is queued if we cannot move that way yet
-    public Vector3 StartPos { get; private set; }
-    public int Score { get; private set; }
-    public int BankedScore {  get; private set; }
+    public NetworkVariable<Vector2> NextDir { get; private set; } = new(Vector2.zero, writePerm: NetworkVariableWritePermission.Owner);
+    public NetworkVariable<float> SpeedMultiplier { get; private set; } = new(1f, writePerm: NetworkVariableWritePermission.Owner);
+    public NetworkVariable<int> Score { get; private set; } = new(0, writePerm: NetworkVariableWritePermission.Owner);
+    public NetworkVariable<int> BankedScore {  get; private set; } = new(0, writePerm: NetworkVariableWritePermission.Owner);
     #endregion
 
     #region Player Controls (Struct)
@@ -68,15 +68,16 @@ public class Player : NetworkBehaviour
         rBody = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
-        StartPos = transform.position;
-        InitializeAs(defaultPlayer); // learned from prefab!
+        startPos = transform.position;
     }
 
     /// <summary>
-    /// Method <c>Start</c> initializes the player's generic state.
+    /// Method <c>OnNetworkSpawn</c> sets up post-network-spawn links and player states.
     /// </summary>
-    private void Start()
+    public override void OnNetworkSpawn()
     {
+        Dir.OnValueChanged += DirChanged;
+        InitializeAs(defaultPlayer); // learned from prefab!
         ResetState();
     }
 
@@ -110,11 +111,10 @@ public class Player : NetworkBehaviour
     /// <param name="isFullReset">a boolean indicating if we should also reset states that persist between levels.</param>
     public void ResetState(bool isFullReset = false)
     {
+        if (!IsOwner) return;
         SetSpeed(1f);
         SetDirection(startDir, true);
-        NextDir = Vector2.zero;
-        transform.position = StartPos;
-        rBody.isKinematic = false;
+        transform.position = startPos;
         enabled = true;
         ResetMode();
         if (isFullReset)
@@ -123,7 +123,8 @@ public class Player : NetworkBehaviour
         }
         else
         {
-            IncBanked(Score);
+            // bank score between levels
+            IncBanked(Score.Value);
         }
         SetScore(0);
     }
@@ -153,9 +154,9 @@ public class Player : NetworkBehaviour
         }
 
         // then handle pre-existing movement queue
-        if (NextDir != Vector2.zero)
+        if (NextDir.Value != Vector2.zero)
         {
-            SetDirection(NextDir);
+            SetDirection(NextDir.Value);
         }
     }
 
@@ -166,7 +167,7 @@ public class Player : NetworkBehaviour
     {
         if (!IsOwner) return;
         Vector2 pos = rBody.position;
-        Vector2 move = Dir.Value * baseSpeed * speedMultiplier.Value * Time.fixedDeltaTime;
+        Vector2 move = Dir.Value * baseSpeed * SpeedMultiplier.Value * Time.fixedDeltaTime;
         rBody.MovePosition(pos + move);
     }
 
@@ -180,15 +181,19 @@ public class Player : NetworkBehaviour
         if (forceSet || !IsBlocked(direction))
         {
             Dir.Value = direction;
-            NextDir = Vector2.zero;
-
-            // handle animation updates
-            animator.SetInteger("Dir", Array.FindIndex(DIRS, d => d.Equals(direction)));
+            NextDir.Value = Vector2.zero;
         } else
         {
             // queue the direction so we keep trying
-            NextDir = direction;
+            NextDir.Value = direction;
         }
+    }
+
+    private void DirChanged(Vector2 previousValue, Vector2 newValue)
+    {
+        // handle animation updates
+        animator.SetInteger("Dir", Array.FindIndex(DIRS, d => d.Equals(newValue)));
+        Debug.Log("Player " + currPlayer.ToString() + " animator dir now: " + animator.GetInteger("Dir").ToString());
     }
 
     /// <summary>
@@ -197,7 +202,7 @@ public class Player : NetworkBehaviour
     /// <param name="speed">the player's new speed.</param>
     private void SetSpeed(float speed)
     {
-        speedMultiplier.Value = speed;
+        SpeedMultiplier.Value = speed;
         animator.SetFloat("Speed", speed);
     }
 
@@ -218,7 +223,8 @@ public class Player : NetworkBehaviour
     /// <param name="newPosition">the position where the player will end up.</param>
     public void TeleportTo(Vector3 newPosition)
     {
-        if (IsOwner) TeleportToServerRpc(newPosition);
+        //if (IsOwner) TeleportToServerRpc(newPosition);
+        if (IsOwner) gameObject.GetComponent<NetworkTransform>().Teleport(newPosition, transform.rotation, transform.localScale);
     }
 
     /// <summary>
@@ -228,7 +234,7 @@ public class Player : NetworkBehaviour
     [ServerRpc]
     private void TeleportToServerRpc(Vector3 newPosition)
     {
-        gameObject.GetComponent<NetworkTransform>().Teleport(newPosition, transform.rotation, transform.localScale);
+        //gameObject.GetComponent<NetworkTransform>().Teleport(newPosition, transform.rotation, transform.localScale);
     }
     #endregion
 
@@ -239,8 +245,8 @@ public class Player : NetworkBehaviour
     /// <param name="newScore">the new score value.</param>
     private void SetScore(int newScore)
     {
-        Score = newScore;
-        game.UpdatePlayerScore(currPlayer, Score);
+        Score.Value = newScore;
+        game.UpdatePlayerScore(currPlayer, Score.Value);
     }
 
     /// <summary>
@@ -249,7 +255,7 @@ public class Player : NetworkBehaviour
     /// <param name="plusScore">the increment value for the score. <see cref="SetScore"/></param>
     private void IncScore(int plusScore)
     {
-        SetScore(Score + plusScore);
+        SetScore(Score.Value + plusScore);
     }
 
     /// <summary>
@@ -258,8 +264,8 @@ public class Player : NetworkBehaviour
     /// <param name="newBanked">the new banked score value.</param>
     private void SetBanked(int newBanked)
     {
-        BankedScore = newBanked;
-        game.UpdatePlayerBanked(currPlayer, BankedScore);
+        BankedScore.Value = newBanked;
+        game.UpdatePlayerBanked(currPlayer, BankedScore.Value);
     }
 
     /// <summary>
@@ -268,7 +274,7 @@ public class Player : NetworkBehaviour
     /// <param name="plusBanked">the increment value for the banked score. <see cref="SetBanked"/></param>
     private void IncBanked(int plusBanked)
     {
-        SetBanked(BankedScore + plusBanked);
+        SetBanked(BankedScore.Value + plusBanked);
     }
     #endregion
 
@@ -308,7 +314,7 @@ public class Player : NetworkBehaviour
     /// <param name="player">the player eaten by this player.</param>
     public void EatPlayer(Player player)
     {
-        IncScore(player.Score);
+        IncScore(player.Score.Value);
     }
 
     /// <summary>

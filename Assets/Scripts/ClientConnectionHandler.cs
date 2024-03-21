@@ -45,10 +45,12 @@ public class ClientConnectionHandler : MonoBehaviour
         {
             response.Approved = false;
             response.Reason = "Player limit reached.";
+            Debug.Log("Connection from Client " + request.ClientNetworkId + " refused as game is full.");
         } else if (!game.IsGameOver.Value)
         {
             response.Approved= false;
             response.Reason = "Game in progress, new connections disabled.";
+            Debug.Log("Connection from Client " + request.ClientNetworkId + " refused as game is in progress.");
         } else
         {
             int playerNum = availablePlayers.First();
@@ -66,6 +68,7 @@ public class ClientConnectionHandler : MonoBehaviour
     /// <param name="clientId">the network ID of the client that is disconnecting.</param>
     private void DisconnectPlayer(ulong clientId)
     {
+        Debug.Log("Client " + clientId + " disconnecting...");
         int playerNum = clientPlayers[clientId];
         clientPlayers.Remove(clientId);
         availablePlayers.Add(playerNum);
