@@ -126,7 +126,6 @@ public class Player : NetworkBehaviour
     public void ResetState(bool isFullReset = false)
     {
         if (!IsOwner) return;
-        SetSpeed(1f);
         SetDirection(startDir, true);
         TeleportTo(startPos);
         ResetMode();
@@ -410,6 +409,7 @@ public class Player : NetworkBehaviour
     {
         gameObject.layer = LayerMask.NameToLayer("Player");
         spriteRenderer.color = Color.white;
+        SetSpeed(1f);
     }
 
     /// <summary>
@@ -420,6 +420,7 @@ public class Player : NetworkBehaviour
     {
         gameObject.layer = LayerMask.NameToLayer("Enemy");
         spriteRenderer.color = Color.red;
+        SetSpeed(1.1f);
         Invoke(nameof(ResetMode), duration);
         if (IsOwner) EnemyModeServerRpc(duration);
     }
@@ -442,6 +443,7 @@ public class Player : NetworkBehaviour
     {
         gameObject.layer = LayerMask.NameToLayer("Ghost");
         spriteRenderer.color = Color.gray;
+        SetSpeed(.5f);
         if (duration > 0) Invoke(nameof(ResetMode), duration);
     }
     #endregion
