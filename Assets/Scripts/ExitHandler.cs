@@ -1,3 +1,4 @@
+using Unity.Netcode;
 using UnityEngine;
 
 /// <summary>
@@ -17,6 +18,15 @@ public class ExitHandler : MonoBehaviour
         Vector3 position = collision.transform.position;
         position.x = target.position.x;
         position.y = target.position.y;
-        collision.transform.position = position;
+
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Player") ||
+            collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        {
+            Player player = collision.GetComponent<Player>();
+            player.TeleportTo(position);
+        } else
+        {
+            collision.transform.position = position; // nothing else should be colliding, but just in case
+        }
     }
 }

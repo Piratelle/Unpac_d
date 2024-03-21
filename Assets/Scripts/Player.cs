@@ -1,5 +1,6 @@
 using System;
 using Unity.Netcode;
+using Unity.Netcode.Components;
 using UnityEngine;
 
 /// <summary>
@@ -8,6 +9,7 @@ using UnityEngine;
 /// </summary>
 public class Player : NetworkBehaviour
 {
+    #region Variables
     private static readonly Vector2[] DIRS = { Vector2.up, Vector2.left, Vector2.down, Vector2.right };
     private static readonly PlayerControls[] CTLS = { new(KeyCode.W, KeyCode.A, KeyCode.S, KeyCode.D)
             , new(KeyCode.UpArrow, KeyCode.LeftArrow, KeyCode.DownArrow, KeyCode.RightArrow)
@@ -32,7 +34,9 @@ public class Player : NetworkBehaviour
     public Vector3 StartPos { get; private set; }
     public int Score { get; private set; }
     public int BankedScore {  get; private set; }
+    #endregion
 
+    #region Player Controls (Struct)
     /// <summary>
     /// Struct <c>PlayerControls</c> provides for each player to have their own key controls without changing the base class's behavior.
     /// </summary>
@@ -52,7 +56,9 @@ public class Player : NetworkBehaviour
             Right = rightKey;
         }
     }
+    #endregion
 
+    #region Initialization
     /// <summary>
     /// Method <c>Awake</c> sets up all necessary code-component links.
     /// </summary>
@@ -86,6 +92,44 @@ public class Player : NetworkBehaviour
         game.Activate(playerNum);
     }
 
+    /// <summary>
+    /// Method <c>SetControls</c> sets the KeyCodes which will be accepted to direct this player based on stored presets.
+    /// </summary>
+    /// <param name="ctrlIndex">the index of the preset controls to be used for this player.</param>
+    private void SetControls(int ctrlIndex)
+    {
+        if (ctrlIndex < CTLS.Length)
+        {
+            controls = CTLS[ctrlIndex];
+        }
+    }
+
+    /// <summary>
+    /// Method <c>ResetState</c> resets the player state to initial values.
+    /// </summary>
+    /// <param name="isFullReset">a boolean indicating if we should also reset states that persist between levels.</param>
+    public void ResetState(bool isFullReset = false)
+    {
+        SetSpeed(1f);
+        SetDirection(startDir, true);
+        NextDir = Vector2.zero;
+        transform.position = StartPos;
+        rBody.isKinematic = false;
+        enabled = true;
+        ResetMode();
+        if (isFullReset)
+        {
+            SetBanked(0);
+        }
+        else
+        {
+            IncBanked(Score);
+        }
+        SetScore(0);
+    }
+    #endregion
+
+    #region Movement
     /// <summary>
     /// Method <c>Update</c> handles non-physics player movement.
     /// </summary>
@@ -127,45 +171,10 @@ public class Player : NetworkBehaviour
     }
 
     /// <summary>
-    /// Method <c>SetControls</c> sets the KeyCodes which will be accepted to direct this player based on stored presets.
-    /// </summary>
-    /// <param name="ctrlIndex">the index of the preset controls to be used for this player.</param>
-    private void SetControls(int ctrlIndex)
-    {
-        if (ctrlIndex < CTLS.Length)
-        {
-            controls = CTLS[ctrlIndex];
-        }
-    }
-
-    /// <summary>
-    /// Method <c>ResetState</c> resets the player state to initial values.
-    /// </summary>
-    /// <param name="isFullReset">a boolean indicating if we should also reset states that persist between levels.</param>
-    public void ResetState(bool isFullReset = false)
-    {
-        SetSpeed(1f);
-        SetDirection(startDir, true);
-        NextDir = Vector2.zero;
-        transform.position = StartPos;
-        rBody.isKinematic = false;
-        enabled = true;
-        ResetMode();
-        if (isFullReset)
-        {
-            SetBanked(0);
-        } else
-        {
-            IncBanked(Score);
-        }
-        SetScore(0);
-    }
-
-    /// <summary>
     /// Method <c>SetDir</c> attempts to change the player's direction but checks for obstacles first.
     /// </summary>
-    /// <param name="newDir"></param>
-    /// <param name="forceSet"></param>
+    /// <param name="newDir">the direction the player wants to go.</param>
+    /// <param name="forceSet">a boolean indicating whether or not the presence of obstacles should be ignored.</param>
     private void SetDirection(Vector2 direction, bool forceSet = false)
     {
         if (forceSet || !IsBlocked(direction))
@@ -192,6 +201,38 @@ public class Player : NetworkBehaviour
         animator.SetFloat("Speed", speed);
     }
 
+    /// <summary>
+    /// Method <c>IsBlocked</c> checks a potential direction to see if the player can move that way.
+    /// </summary>
+    /// <param name="direction">the direction to be checked.</param>
+    /// <returns>True if the player is blocked from moving in that direction, False otherwise.</returns>
+    private bool IsBlocked(Vector2 direction)
+    {
+        RaycastHit2D hit = Physics2D.BoxCast(transform.position, Vector2.one * 0.9f, 0f, direction, 0.75f, obstacleLayer);
+        return hit.collider != null;
+    }
+
+    /// <summary>
+    /// Method <c>TeleportTo</c> handles non-interpolated player motion.
+    /// </summary>
+    /// <param name="newPosition">the position where the player will end up.</param>
+    public void TeleportTo(Vector3 newPosition)
+    {
+        if (IsOwner) TeleportToServerRpc(newPosition);
+    }
+
+    /// <summary>
+    /// Method <c>TeleportToServerRpc</c> handles server-based non-interpolated player motion.
+    /// </summary>
+    /// <param name="newPosition">the position where the player will end up.</param>
+    [ServerRpc]
+    private void TeleportToServerRpc(Vector3 newPosition)
+    {
+        gameObject.GetComponent<NetworkTransform>().Teleport(newPosition, transform.rotation, transform.localScale);
+    }
+    #endregion
+
+    #region Scoring
     /// <summary>
     /// Method <c>SetScore</c> is a mutator for this player's internal score value.
     /// </summary>
@@ -229,16 +270,21 @@ public class Player : NetworkBehaviour
     {
         SetBanked(BankedScore + plusBanked);
     }
+    #endregion
 
+    #region Eating & Modes
     /// <summary>
-    /// Method <c>IsBlocked</c> checks a potential direction to see if the player can move that way.
+    /// Method <c>OnCollisionEnter2D</c> handles state changes from collisions with other players.
     /// </summary>
-    /// <param name="direction">the direction to be checked.</param>
-    /// <returns>True if the player is blocked from moving in that direction, False otherwise.</returns>
-    private bool IsBlocked(Vector2 direction)
+    /// <param name="collision">the GameObject colliding with this player.</param>
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        RaycastHit2D hit = Physics2D.BoxCast(transform.position, Vector2.one * 0.9f, 0f, direction, 0.75f, obstacleLayer);
-        return hit.collider != null;
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        {
+            Player enemy = collision.gameObject.GetComponent<Player>();
+            enemy.EatPlayer(this);
+            EnterDeadMode(2f);
+        }
     }
 
     /// <summary>
@@ -263,20 +309,6 @@ public class Player : NetworkBehaviour
     public void EatPlayer(Player player)
     {
         IncScore(player.Score);
-    }
-
-    /// <summary>
-    /// Method <c>OnCollisionEnter2D</c> handles state changes from collisions with other players.
-    /// </summary>
-    /// <param name="collision">the GameObject colliding with this player.</param>
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
-        {
-            Player enemy = collision.gameObject.GetComponent<Player>();
-            enemy.EatPlayer(this);
-            EnterDeadMode(2f);
-        }
     }
 
     /// <summary>
@@ -309,4 +341,5 @@ public class Player : NetworkBehaviour
         spriteRenderer.color = Color.gray;
         Invoke(nameof(ResetMode), duration);
     }
+    #endregion
 }
