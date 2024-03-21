@@ -128,7 +128,7 @@ public class Player : NetworkBehaviour
         if (!IsOwner) return;
         SetSpeed(1f);
         SetDirection(startDir, true);
-        transform.position = startPos;
+        TeleportTo(startPos);
         ResetMode();
         if (isFullReset)
         {
@@ -249,6 +249,7 @@ public class Player : NetworkBehaviour
     /// <param name="speed">the player's new speed.</param>
     private void SetSpeed(float speed)
     {
+        if (!IsOwner) return;
         SpeedMultiplier.Value = speed;
         animator.SetFloat("Speed", speed);
     }
@@ -270,18 +271,7 @@ public class Player : NetworkBehaviour
     /// <param name="newPosition">the position where the player will end up.</param>
     public void TeleportTo(Vector3 newPosition)
     {
-        //if (IsOwner) TeleportToServerRpc(newPosition);
         if (IsOwner) gameObject.GetComponent<NetworkTransform>().Teleport(newPosition, transform.rotation, transform.localScale);
-    }
-
-    /// <summary>
-    /// Method <c>TeleportToServerRpc</c> handles server-based non-interpolated player motion.
-    /// </summary>
-    /// <param name="newPosition">the position where the player will end up.</param>
-    [ServerRpc]
-    private void TeleportToServerRpc(Vector3 newPosition)
-    {
-        //gameObject.GetComponent<NetworkTransform>().Teleport(newPosition, transform.rotation, transform.localScale);
     }
     #endregion
 
@@ -292,6 +282,7 @@ public class Player : NetworkBehaviour
     /// <param name="newScore">the new score value.</param>
     private void SetScore(int newScore)
     {
+        if (!IsOwner) return;
         Score.Value = newScore;
     }
 
@@ -301,7 +292,7 @@ public class Player : NetworkBehaviour
     /// <param name="plusScore">the increment value for the score. <see cref="SetScore"/></param>
     private void IncScore(int plusScore)
     {
-        if (IsOwner) SetScore(Score.Value + plusScore);
+        SetScore(Score.Value + plusScore);
     }
 
     /// <summary>
@@ -320,6 +311,7 @@ public class Player : NetworkBehaviour
     /// <param name="newBanked">the new banked score value.</param>
     private void SetBanked(int newBanked)
     {
+        if (!IsOwner) return;
         BankedScore.Value = newBanked;
     }
 
@@ -329,7 +321,7 @@ public class Player : NetworkBehaviour
     /// <param name="plusBanked">the increment value for the banked score. <see cref="SetBanked"/></param>
     private void IncBanked(int plusBanked)
     {
-        if (IsOwner) SetBanked(BankedScore.Value + plusBanked);
+        SetBanked(BankedScore.Value + plusBanked);
     }
 
     /// <summary>
@@ -338,7 +330,7 @@ public class Player : NetworkBehaviour
     private void BankScore()
     {
         IncBanked(Score.Value);
-        if (IsOwner) SetScore(0);
+        SetScore(0);
     }
 
     /// <summary>
@@ -373,6 +365,7 @@ public class Player : NetworkBehaviour
     /// <param name="pellet">the pellet eaten by this player.</param>
     public void EatPellet(Pellet pellet)
     {
+        if (IsOwner) EatPelletServerRpc();
         pellet.gameObject.SetActive(false);
         if (pellet is PowerPellet)
         {
@@ -383,12 +376,31 @@ public class Player : NetworkBehaviour
     }
 
     /// <summary>
+    /// Method <c>EatPelletServerRpc</c> handles the server response to eating a pellet.
+    /// </summary>
+    [ServerRpc]
+    private void EatPelletServerRpc()
+    {
+        AudioPlayer.Instance.PlayEat();
+    }
+
+    /// <summary>
     /// Method <c>EatPlayer</c> handles state changes when this player eats another.
     /// </summary>
     /// <param name="player">the player eaten by this player.</param>
     public void EatPlayer(Player player)
     {
+        if (IsOwner) EatPlayerServerRpc();
         IncScore(player.Score.Value);
+    }
+
+    /// <summary>
+    /// Method <c>EatPlayerServerRpc</c> handles the server response to eating another player.
+    /// </summary>
+    [ServerRpc]
+    private void EatPlayerServerRpc()
+    {
+        AudioPlayer.Instance.PlaySteal();
     }
 
     /// <summary>
@@ -409,6 +421,17 @@ public class Player : NetworkBehaviour
         gameObject.layer = LayerMask.NameToLayer("Enemy");
         spriteRenderer.color = Color.red;
         Invoke(nameof(ResetMode), duration);
+        if (IsOwner) EnemyModeServerRpc(duration);
+    }
+
+    /// <summary>
+    /// Method <c>EnemyModeServerRpc</c> handles the server response to Enemy Mode.
+    /// </summary>
+    /// <param name="duration">the duration before the mode resets.</param>
+    [ServerRpc]
+    private void EnemyModeServerRpc(float duration)
+    {
+        AudioPlayer.Instance.StartEnemy(duration);
     }
 
     /// <summary>
