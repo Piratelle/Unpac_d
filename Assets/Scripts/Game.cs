@@ -1,8 +1,6 @@
 using TMPro;
 using Unity.Netcode;
-using UnityEditor.U2D.Path.GUIFramework;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 
 /// <summary>
 /// Class <c>Game</c> handles shared game state logic.

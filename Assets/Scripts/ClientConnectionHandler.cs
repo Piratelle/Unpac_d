@@ -2,7 +2,6 @@ using UnityEngine;
 using Unity.Netcode;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.PackageManager.Requests;
 
 /// <summary>
 /// Class <c>ClientConnectionHandler</c> provides control logic to limit new client connections.
