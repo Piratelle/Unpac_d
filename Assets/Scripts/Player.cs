@@ -153,7 +153,6 @@ public class Player : NetworkBehaviour
             // Game Over!
             EnterDeadMode();
             if (IsOwner) SetSpeed(0f);
-            BankScore();
         } else
         {
             // New Game!
@@ -444,6 +443,7 @@ public class Player : NetworkBehaviour
     {
         gameObject.layer = LayerMask.NameToLayer("Ghost");
         spriteRenderer.color = Color.gray;
+        BankScore();
         SetSpeed(.5f);
         CancelInvoke();
         if (duration > 0) Invoke(nameof(ResetMode), duration);
