@@ -102,7 +102,7 @@ public class Player : NetworkBehaviour
         currPlayer = playerNum;
         SetControls(playerNum);
         startDir = DIRS[2 * (playerNum % 2) + 1];
-        game.Activate(currPlayer);
+        game.Activate(currPlayer, IsOwner);
     }
 
     /// <summary>

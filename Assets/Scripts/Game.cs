@@ -32,9 +32,9 @@ public class Game : NetworkBehaviour
     /// Method <c>Activate</c> activates the UI for the provided player number. <see cref="SetPlayer"/>.
     /// </summary>
     /// <param name="playerNum">the player whose UI should be activated.</param>
-    public void Activate(int playerNum)
+    public void Activate(int playerNum, bool isMe)
     {
-        SetPlayer(playerNum, true);
+        SetPlayer(playerNum, true, isMe);
     }
 
     /// <summary>
@@ -51,7 +51,7 @@ public class Game : NetworkBehaviour
     /// </summary>
     /// <param name="playerNum"></param>
     /// <param name="isActive">a boolean indicating if the player should be activated or deactivated.</param>
-    private void SetPlayer(int playerNum, bool isActive)
+    private void SetPlayer(int playerNum, bool isActive, bool isMe = false)
     {
         if (playerNum <= playerPanels.Length && playerNum >= 0)
         {
@@ -59,6 +59,14 @@ public class Game : NetworkBehaviour
             playerFinals[playerNum].SetActive(isActive);
             playerCount += isActive ? 1 : -1;
             playersLabel.text = playerCount.ToString() + "/" + ClientConnectionHandler.Instance.MaxPlayers();
+            foreach (Transform child in playerPanels[playerNum].GetComponentsInChildren<Transform>(true))
+            {
+                if (child.name == "IsMe")
+                {
+                    child.gameObject.SetActive(isMe && isActive);
+                    return;
+                }
+            }
         }
     }
 
